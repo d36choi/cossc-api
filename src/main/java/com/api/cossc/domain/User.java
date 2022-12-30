@@ -28,6 +28,9 @@ public class User extends BaseTimeEntity{
   @Column(unique = true)
   private String name;
 
+  @Column(unique = true)
+  private String oauthKey;
+
   private String description;
 
   private String img;
@@ -41,11 +44,11 @@ public class User extends BaseTimeEntity{
   private String refreshToken;
 
   @Builder
-  public User(String email, String img, UserRole role, AuthProvider authProvider) {
+  public User(String email, String oauthKey, String img, UserRole role, AuthProvider authProvider) {
     this.email = email;
+    this.oauthKey = oauthKey;
     this.img = img;
     this.role = role;
     this.authProvider = authProvider;
-//    this.state = state;
   }
 }

@@ -10,13 +10,19 @@ import lombok.ToString;
 @ToString
 public abstract class OAuth2UserInfo {
   protected Map<String, Object> attributes;
+  protected String key;
 
-  public OAuth2UserInfo(Map<String, Object> attributes) {
+  public OAuth2UserInfo(Map<String, Object> attributes, String key) {
     this.attributes = attributes;
+    this.key = key;
   }
 
   public Map<String, Object> getAttributes() {
     return attributes;
+  }
+
+  public String getKey() {
+    return key;
   }
 
   public abstract String getId();
