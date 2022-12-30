@@ -38,9 +38,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     AuthProvider authProvider = AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId().toUpperCase());
     OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(authProvider, oAuth2User);
 
-//    if (userInfo.getEmail().isEmpty()) {
-//      throw new OAuthProcessingException("Email not found from OAuth2 provider");
-//    }
     String oauthKey = userInfo.getKey();
 
     Optional<User> userOptional = userRepository.findByOauthKeyOrEmail(oauthKey, userInfo.getEmail());

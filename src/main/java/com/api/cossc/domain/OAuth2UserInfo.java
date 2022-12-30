@@ -5,11 +5,15 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.validation.constraints.NotEmpty;
+
 @Getter
 @Setter
 @ToString
 public abstract class OAuth2UserInfo {
   protected Map<String, Object> attributes;
+
+  @NotEmpty(message = "user의 key는 empty일 수 없습니다.")
   protected String key;
 
   public OAuth2UserInfo(Map<String, Object> attributes, String key) {
