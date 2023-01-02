@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import com.api.cossc.domain.User;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -59,6 +60,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     User user = User.builder()
         .email(userInfo.getEmail())
         .img(userInfo.getImageUrl())
+        .name(Optional.of(userInfo.getName()).orElse(RandomStringUtils.random(10, true, true)))
         .role(UserRole.USER)
         .oauthKey(oauthKey)
         .authProvider(authProvider)
