@@ -41,7 +41,7 @@ spring:
     url: jdbc:mysql://localhost:3306/cossc?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
   sql:
     init:
-      mode: always
+      mode: embedded
       schema-locations: classpath*:db/cossc/schema.sql
       data-locations: classpath*:db/cossc/data.sql
 ---
