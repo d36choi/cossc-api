@@ -44,8 +44,9 @@ public class User extends BaseTimeEntity{
   private String refreshToken;
 
   @Builder
-  public User(String email, String oauthKey, String img, UserRole role, AuthProvider authProvider) {
+  public User(String email, String name, String oauthKey, String img, UserRole role, AuthProvider authProvider) {
     this.email = email;
+    this.name = name;
     this.oauthKey = oauthKey;
     this.img = img;
     this.role = role;
