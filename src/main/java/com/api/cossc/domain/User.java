@@ -24,25 +24,29 @@ public class User extends BaseTimeEntity{
   private Long id;
 
 
-  @Column(unique = true, nullable = false)
+  @Column(name = "email", unique = true, nullable = false)
   private String email;
 
-  @Column(unique = true)
+  @Column(name = "name",unique = true)
   private String name;
 
-  @Column(unique = true)
+  @Column(name = "oauth_key", unique = true)
   private String oauthKey;
 
+  @Column(name = "description")
   private String description;
 
+  @Column(name = "img")
   private String img;
 
   @Enumerated(EnumType.STRING)
   private UserRole role;
 
   @Enumerated(EnumType.STRING)
+  @Column(name = "auth_provider")
   private AuthProvider authProvider;
 
+  @Column(name = "refresh_token")
   private String refreshToken;
 
   @Builder
