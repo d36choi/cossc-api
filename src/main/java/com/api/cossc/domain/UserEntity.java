@@ -1,17 +1,13 @@
 package com.api.cossc.domain;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.Set;
 
 @Getter
 @NoArgsConstructor
@@ -48,6 +44,10 @@ public class UserEntity extends BaseTimeEntity{
 
   @Column(name = "refresh_token")
   private String refreshToken;
+
+  @OneToMany(mappedBy = "userEntity")
+  Set<UserQuizEntity> userQuizEntitySet;
+
 
   @Builder
   public UserEntity(String email, String name, String oauthKey, String img, UserRole role, AuthProvider authProvider) {
