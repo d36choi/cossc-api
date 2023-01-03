@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "USER")
-public class User extends BaseTimeEntity{
+public class UserEntity extends BaseTimeEntity{
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "user_id")
@@ -50,7 +50,7 @@ public class User extends BaseTimeEntity{
   private String refreshToken;
 
   @Builder
-  public User(String email, String name, String oauthKey, String img, UserRole role, AuthProvider authProvider) {
+  public UserEntity(String email, String name, String oauthKey, String img, UserRole role, AuthProvider authProvider) {
     this.email = email;
     this.name = name;
     this.oauthKey = oauthKey;

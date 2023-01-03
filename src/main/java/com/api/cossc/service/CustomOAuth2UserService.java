@@ -10,7 +10,7 @@ import com.api.cossc.security.CustomUserDetails;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import com.api.cossc.domain.User;
+import com.api.cossc.domain.UserEntity;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -41,23 +41,23 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     String oauthKey = userInfo.getKey();
 
-    Optional<User> userOptional = userRepository.findByOauthKeyOrEmail(oauthKey, userInfo.getEmail());
-    User user;
+    Optional<UserEntity> userOptional = userRepository.findByOauthKeyOrEmail(oauthKey, userInfo.getEmail());
+    UserEntity userEntity;
 
     if (userOptional.isPresent()) {
-      user = userOptional.get();
-      if (authProvider != user.getAuthProvider()) {
+      userEntity = userOptional.get();
+      if (authProvider != userEntity.getAuthProvider()) {
         throw new OAuthProcessingException("Wrong Match Auth Provider");
       }
 
     } else {
-      user = createUser(userInfo, oauthKey, authProvider);
+      userEntity = createUser(userInfo, oauthKey, authProvider);
     }
-    return CustomUserDetails.create(user, oAuth2User.getAttributes());
+    return CustomUserDetails.create(userEntity, oAuth2User.getAttributes());
   }
 
-  private User createUser(OAuth2UserInfo userInfo, String oauthKey, AuthProvider authProvider) {
-    User user = User.builder()
+  private UserEntity createUser(OAuth2UserInfo userInfo, String oauthKey, AuthProvider authProvider) {
+    UserEntity userEntity = UserEntity.builder()
         .email(userInfo.getEmail())
         .img(userInfo.getImageUrl())
         .name(Optional.of(userInfo.getName()).orElse(RandomStringUtils.random(10, true, true)))
@@ -65,6 +65,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         .oauthKey(oauthKey)
         .authProvider(authProvider)
         .build();
-    return userRepository.save(user);
+    return userRepository.save(userEntity);
   }
 }
