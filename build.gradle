@@ -28,6 +28,7 @@ dependencies {
 
 	compileOnly 'org.projectlombok:lombok'
 //	compile 'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
 
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	implementation 'mysql:mysql-connector-java'
