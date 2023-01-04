@@ -8,6 +8,7 @@ services:
       - "8080:8080"
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/cossc?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_PROFILES_ACTIVE: local
 
 
   database:
