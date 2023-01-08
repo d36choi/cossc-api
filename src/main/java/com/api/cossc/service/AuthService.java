@@ -1,5 +1,6 @@
 package com.api.cossc.service;
 
+import com.api.cossc.dto.AuthRefreshRequestParam;
 import com.api.cossc.repository.UserRepository;
 import com.api.cossc.security.CustomUserDetails;
 import com.api.cossc.security.JwtTokenProvider;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -24,7 +26,7 @@ public class AuthService {
   private final UserRepository userRepository;
   private final JwtTokenProvider tokenProvider;
 
-  public String refreshToken(HttpServletRequest request, HttpServletResponse response, String oldAccessToken) {
+  public String refreshToken(HttpServletRequest request, HttpServletResponse response, AuthRefreshRequestParam authRefreshRequestParam) {
     // 1. Validation Refresh Token
     String oldRefreshToken = CookieUtil.getCookie(request, cookieKey)
         .map(Cookie::getValue).orElseThrow(() -> new RuntimeException("no Refresh Token Cookie"));
@@ -34,7 +36,7 @@ public class AuthService {
     }
 
     // 2. 유저정보 얻기
-    Authentication authentication = tokenProvider.getAuthentication(oldAccessToken);
+    Authentication authentication = tokenProvider.getAuthentication(authRefreshRequestParam.getAccessToken());
     CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
 
     Long id = Long.valueOf(user.getName());
@@ -42,7 +44,7 @@ public class AuthService {
     // 3. Match Refresh Token
     String savedToken = userRepository.getRefreshTokenById(id);
 
-    if (!savedToken.equals(oldRefreshToken)) {
+    if (!StringUtils.equals(oldRefreshToken, savedToken)) {
       throw new RuntimeException("Not Matched Refresh Token");
     }
 

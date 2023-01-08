@@ -1,5 +1,6 @@
 package com.api.cossc.security;
 
+import com.api.cossc.dto.AuthRefreshRequestParam;
 import com.api.cossc.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -93,8 +94,8 @@ public class JwtTokenProvider {
   }
 
   // Access Token을 검사하고 얻은 정보로 Authentication 객체 생성
-  public Authentication getAuthentication(String accessToken) {
-    Claims claims = parseClaims(accessToken);
+  public Authentication getAuthentication(String token) {
+    Claims claims = parseClaims(token);
 
     Collection<? extends GrantedAuthority> authorities =
         Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
@@ -124,6 +125,7 @@ public class JwtTokenProvider {
     try {
       return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(accessToken).getBody();
     } catch (ExpiredJwtException e) {
+      log.error(">> jwt token parse Error :: {}", e.getClaims());
       return e.getClaims();
     }
   }

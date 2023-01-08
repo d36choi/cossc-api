@@ -1,5 +1,6 @@
 package com.api.cossc.controller;
 
+import com.api.cossc.dto.AuthRefreshRequestParam;
 import com.api.cossc.service.AuthService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,7 +19,7 @@ public class AuthController {
   private final AuthService authService;
 
   @PostMapping("/refresh")
-  public ResponseEntity<String> refreshToken(HttpServletRequest request, HttpServletResponse response, @RequestBody String accessToken) {
-    return ResponseEntity.ok().body(authService.refreshToken(request, response, accessToken));
+  public ResponseEntity<String> refreshToken(HttpServletRequest request, HttpServletResponse response, @RequestBody AuthRefreshRequestParam authRefreshRequestParam) {
+    return ResponseEntity.ok().body(authService.refreshToken(request, response, authRefreshRequestParam));
   }
 }
