@@ -1,19 +1,26 @@
 package com.api.cossc.domain;
 
 
-import javax.persistence.*;
-
+import java.util.Set;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.Set;
 
 @Getter
 @NoArgsConstructor
 @Entity
 @Table(name = "USER")
-public class UserEntity extends BaseTimeEntity{
+public class UserEntity extends BaseTimeEntity {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "user_id")
@@ -23,7 +30,7 @@ public class UserEntity extends BaseTimeEntity{
   @Column(name = "email", unique = true, nullable = false)
   private String email;
 
-  @Column(name = "name",unique = true)
+  @Column(name = "name", unique = true)
   private String name;
 
   @Column(name = "oauth_key", unique = true)
@@ -45,12 +52,19 @@ public class UserEntity extends BaseTimeEntity{
   @Column(name = "refresh_token")
   private String refreshToken;
 
+  @Column(name = "created_by")
+  private String createdBy;
+
+  @Column(name = "updated_by")
+  private String updatedBy;
+
   @OneToMany(mappedBy = "userEntity")
   Set<UserQuizEntity> userQuizEntitySet;
 
 
   @Builder
-  public UserEntity(String email, String name, String oauthKey, String img, UserRole role, AuthProvider authProvider) {
+  public UserEntity(String email, String name, String oauthKey, String img, UserRole role,
+      AuthProvider authProvider) {
     this.email = email;
     this.name = name;
     this.oauthKey = oauthKey;

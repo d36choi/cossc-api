@@ -12,20 +12,20 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "ANSWER")
-public class AnswerEntity extends BaseTimeEntity {
+@Table(name = "TAG")
+public class TagEntity extends BaseTimeEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(name = "answer_id")
+  @Column(name = "tag_id")
   private Long id;
 
-  @Column(name = "text", nullable = false, columnDefinition = "TEXT")
-  private String text;
+  @Column(name = "name", nullable = false, length = 100)
+  private String name;
 
-  @Column(name = "created_by", nullable = false)
+  @Column(name = "createdBy", nullable = false)
   private String createdBy;
 
-  @Column(name = "updated_by", nullable = false)
+  @Column(name = "updatedBy", nullable = false)
   private String updatedBy;
 }

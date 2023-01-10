@@ -1,2 +1,5 @@
-package com.api.cossc.repository;public class QuizRepository {
+package com.api.cossc.repository;
+
+public class QuizRepository {
+
 }
