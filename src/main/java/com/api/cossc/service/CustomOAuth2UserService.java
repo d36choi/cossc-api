@@ -1,9 +1,9 @@
 package com.api.cossc.service;
 
 import com.api.cossc.domain.AuthProvider;
-import com.api.cossc.domain.OAuth2UserInfo;
-import com.api.cossc.domain.OAuth2UserInfoFactory;
-import com.api.cossc.domain.UserRole;
+import com.api.cossc.dto.oauth.OAuth2UserInfo;
+import com.api.cossc.dto.oauth.OAuth2UserInfoFactory;
+import com.api.cossc.dto.oauth.UserRole;
 import com.api.cossc.exception.OAuthProcessingException;
 import com.api.cossc.repository.UserRepository;
 import com.api.cossc.security.CustomUserDetails;

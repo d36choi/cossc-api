@@ -11,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.api.cossc.dto.oauth.UserRole;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

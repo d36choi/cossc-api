@@ -1,5 +1,6 @@
-package com.api.cossc.domain;
+package com.api.cossc.dto.oauth;
 
+import com.api.cossc.domain.AuthProvider;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 public class OAuth2UserInfoFactory {

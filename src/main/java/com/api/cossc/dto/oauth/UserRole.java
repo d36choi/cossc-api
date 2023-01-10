@@ -1,4 +1,4 @@
-package com.api.cossc.domain;
+package com.api.cossc.dto.oauth;
 
 
 public enum UserRole {
