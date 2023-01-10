@@ -49,14 +49,15 @@ CREATE TABLE `QUIZ`
 (
     `quiz_id`      bigint       NOT NULL AUTO_INCREMENT,
     `title`        varchar(100) NOT NULL,
-    `description`  varchar(255) NOT NULL,
+    `description`  text         NOT NULL,
     `user_id`      bigint       NOT NULL,
+    `type`         varchar(100) NOT NULL,
     `created_date` datetime     NOT NULL,
     `created_by`   varchar(255) NOT NULL,
     `updated_date` datetime     NOT NULL,
     `updated_by`   varchar(255) NOT NULL,
     PRIMARY KEY (`quiz_id`),
-    KEY            `QUIZ_FK` (`user_id`),
+    KEY `QUIZ_FK` (`user_id`),
     CONSTRAINT `QUIZ_FK` FOREIGN KEY (`user_id`) REFERENCES `USER` (`user_id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
@@ -69,7 +70,7 @@ CREATE TABLE `QUIZ_TAG`
     `quiz_id` bigint NOT NULL,
     `tag_id`  bigint NOT NULL,
     PRIMARY KEY (`quiz_id`, `tag_id`),
-    KEY       `QUIZ_TAG_FK_1` (`tag_id`),
+    KEY `QUIZ_TAG_FK_1` (`tag_id`),
     CONSTRAINT `QUIZ_TAG_FK` FOREIGN KEY (`quiz_id`) REFERENCES `QUIZ` (`quiz_id`),
     CONSTRAINT `QUIZ_TAG_FK_1` FOREIGN KEY (`tag_id`) REFERENCES `TAG` (`tag_id`)
 ) ENGINE = InnoDB
@@ -85,7 +86,7 @@ CREATE TABLE `USER_QUIZ`
     `solved`  bigint DEFAULT NULL,
     `failed`  bigint DEFAULT NULL,
     PRIMARY KEY (`user_id`, `quiz_id`),
-    KEY       `USER_QUIZ_FK_1` (`quiz_id`),
+    KEY `USER_QUIZ_FK_1` (`quiz_id`),
     CONSTRAINT `USER_QUIZ_FK` FOREIGN KEY (`user_id`) REFERENCES `USER` (`user_id`),
     CONSTRAINT `USER_QUIZ_FK_1` FOREIGN KEY (`quiz_id`) REFERENCES `QUIZ` (`quiz_id`)
 ) ENGINE = InnoDB
@@ -105,8 +106,8 @@ CREATE TABLE `ANSWER`
     `updated_date` datetime     NOT NULL,
     `updated_by`   varchar(255) NOT NULL,
     PRIMARY KEY (`answer_id`),
-    KEY            `ANSWER_FK` (`user_id`),
-    KEY            `ANSWER_FK_1` (`quiz_id`),
+    KEY `ANSWER_FK` (`user_id`),
+    KEY `ANSWER_FK_1` (`quiz_id`),
     CONSTRAINT `ANSWER_FK` FOREIGN KEY (`user_id`) REFERENCES `USER` (`user_id`),
     CONSTRAINT `ANSWER_FK_1` FOREIGN KEY (`quiz_id`) REFERENCES `QUIZ` (`quiz_id`)
 ) ENGINE = InnoDB
@@ -121,14 +122,14 @@ CREATE TABLE `HISTORY`
     `history_date` date         NOT NULL,
     `user_id`      bigint       NOT NULL,
     `quiz_id`      bigint       NOT NULL,
-    `solved`       tinyint(1) NOT NULL,
+    `solved`       tinyint(1)   NOT NULL,
     `created_date` datetime     NOT NULL,
     `created_by`   varchar(255) NOT NULL,
     `updated_date` datetime     NOT NULL,
     `updated_by`   varchar(255) NOT NULL,
     PRIMARY KEY (`history_date`, `user_id`, `quiz_id`),
-    KEY            `HISTORY_FK` (`quiz_id`),
-    KEY            `HISTORY_FK_1` (`user_id`),
+    KEY `HISTORY_FK` (`quiz_id`),
+    KEY `HISTORY_FK_1` (`user_id`),
     CONSTRAINT `HISTORY_FK` FOREIGN KEY (`quiz_id`) REFERENCES `QUIZ` (`quiz_id`),
     CONSTRAINT `HISTORY_FK_1` FOREIGN KEY (`user_id`) REFERENCES `USER` (`user_id`)
 ) ENGINE = InnoDB
