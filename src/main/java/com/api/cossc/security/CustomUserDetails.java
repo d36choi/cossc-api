@@ -11,6 +11,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
+import static com.api.cossc.dto.oauth.UserRole.*;
+
 @Getter
 public class CustomUserDetails implements UserDetails, OAuth2User {
   private final Long id;
@@ -26,7 +28,7 @@ public class CustomUserDetails implements UserDetails, OAuth2User {
 
   public static CustomUserDetails create(UserEntity userEntity) {
     List<GrantedAuthority> authorities = Collections.
-        singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+        singletonList(new SimpleGrantedAuthority(USER.getRole()));
 
     return new CustomUserDetails(
         userEntity.getId(),
