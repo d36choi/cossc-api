@@ -52,10 +52,10 @@ public class UserEntity extends BaseTimeEntity {
   @Column(name = "refresh_token")
   private String refreshToken;
 
-  @Column(name = "created_by")
+  @Column(name = "created_by", nullable = false)
   private String createdBy;
 
-  @Column(name = "updated_by")
+  @Column(name = "updated_by", nullable = false)
   private String updatedBy;
 
   @OneToMany(mappedBy = "userEntity")
@@ -64,12 +64,14 @@ public class UserEntity extends BaseTimeEntity {
 
   @Builder
   public UserEntity(String email, String name, String oauthKey, String img, UserRole role,
-      AuthProvider authProvider) {
+                    AuthProvider authProvider, String createdBy, String updatedBy) {
     this.email = email;
     this.name = name;
     this.oauthKey = oauthKey;
     this.img = img;
     this.role = role;
     this.authProvider = authProvider;
+    this.createdBy = createdBy;
+    this.updatedBy = updatedBy;
   }
 }

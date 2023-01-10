@@ -57,14 +57,20 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
   }
 
   private UserEntity createUser(OAuth2UserInfo userInfo, String oauthKey, AuthProvider authProvider) {
+
+    String name = Optional.of(userInfo.getName()).orElse(RandomStringUtils.random(10, true, true));
+
     UserEntity userEntity = UserEntity.builder()
         .email(userInfo.getEmail())
         .img(userInfo.getImageUrl())
-        .name(Optional.of(userInfo.getName()).orElse(RandomStringUtils.random(10, true, true)))
+        .name(name)
         .role(UserRole.USER)
         .oauthKey(oauthKey)
         .authProvider(authProvider)
+        .createdBy(name)
+        .updatedBy(name)
         .build();
+
     return userRepository.save(userEntity);
   }
 }
