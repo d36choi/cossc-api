@@ -17,11 +17,11 @@ public class HistoryEntity extends BaseTimeEntity {
     private LocalDateTime historyDate;
 
     @ManyToOne(targetEntity = UserEntity.class, fetch = FetchType.LAZY)
-    @JoinColumn
+    @JoinColumn(name = "user_id")
     private UserEntity userEntity;
 
     @ManyToOne(targetEntity = QuizEntity.class, fetch = FetchType.LAZY)
-    @JoinColumn
+    @JoinColumn(name = "quiz_id")
     private QuizEntity quizEntity;
 
 

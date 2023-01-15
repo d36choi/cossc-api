@@ -48,4 +48,8 @@ public class QuizEntity extends BaseTimeEntity {
 
   @OneToMany(mappedBy = "quizEntity")
   List<HistoryEntity> historyEntities;
+
+  @ManyToOne(targetEntity = TagEntity.class, fetch = FetchType.LAZY)
+  @JoinColumn(name = "tag_id")
+  private TagEntity tagEntity;
 }

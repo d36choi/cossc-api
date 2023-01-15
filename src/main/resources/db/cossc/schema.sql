@@ -3,10 +3,18 @@ DROP TABLE IF EXISTS `HISTORY`;
 DROP TABLE IF EXISTS `ANSWER`;
 DROP TABLE IF EXISTS `USER_QUIZ`;
 DROP TABLE IF EXISTS `QUIZ_TAG`;
+ALTER TABLE `USER`
+    DROP CONSTRAINT `USER_FK`;
 DROP TABLE IF EXISTS `TAG`;
-DROP TABLE IF EXISTS `QUIZ`;
+ALTER TABLE `QUIZ`
+    DROP CONSTRAINT `QUIZ_FK`;
+ALTER TABLE `QUIZ`
+    DROP CONSTRAINT `QUIZ_FK_2`;
+ALTER TABLE `QUIZ`
+    DROP CONSTRAINT `QUIZ_FK_3`;
 DROP TABLE IF EXISTS `OX_CHOICE_QUESTION`;
 DROP TABLE IF EXISTS `MULTIPLE_CHOICE_QUESTION`;
+DROP TABLE IF EXISTS `QUIZ`;
 DROP TABLE IF EXISTS `USER`;
 
 CREATE TABLE `TAG`
@@ -34,13 +42,16 @@ CREATE TABLE `USER`
     `refresh_token` varchar(255) DEFAULT NULL,
     `role`          varchar(255) DEFAULT NULL,
     `level`         varchar(100) DEFAULT NULL,
+    `tag_id`         bigint DEFAULT NULL,
     `created_date`  datetime     NOT NULL,
     `created_by`    varchar(255) NOT NULL,
     `updated_date`  datetime     NOT NULL,
     `updated_by`    varchar(255) NOT NULL,
     PRIMARY KEY (`user_id`),
     UNIQUE KEY `UK_ob8kqyqqgmefl0aco34akdtpe` (`email`),
-    UNIQUE KEY `UK_gj2fy3dcix7ph7k8684gka40c` (`name`)
+    UNIQUE KEY `UK_gj2fy3dcix7ph7k8684gka40c` (`name`),
+    constraint USER_FK
+        foreign key (tag_id) references cossc.TAG (tag_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;

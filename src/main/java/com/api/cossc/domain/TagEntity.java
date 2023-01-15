@@ -1,13 +1,11 @@
 package com.api.cossc.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -28,4 +26,7 @@ public class TagEntity extends BaseTimeEntity {
 
   @Column(name = "updated_by", nullable = false)
   private String updatedBy;
+
+  @OneToMany(mappedBy = "tagEntity")
+  List<QuizEntity> quizEntities;
 }

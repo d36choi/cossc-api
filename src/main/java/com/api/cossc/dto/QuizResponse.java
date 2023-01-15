@@ -2,7 +2,9 @@ package com.api.cossc.dto;
 
 import com.api.cossc.domain.QuizEntity;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+@Getter
 
 public class QuizResponse {
 

@@ -6,29 +6,30 @@ import javax.persistence.AttributeConverter;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class QuizTypeConverter implements AttributeConverter<String, QuizType> {
+public class QuizTypeConverter implements AttributeConverter<QuizType, String> {
     @Override
-    public QuizType convertToDatabaseColumn(String attribute) {
-        if (StringUtils.isEmpty(attribute)) {
+    public String convertToDatabaseColumn(QuizType attribute) {
+        if (Objects.isNull(attribute)) {
             return null;
         }
 
         return Arrays.stream(QuizType.values())
-                .filter(q -> q.getName().equals(attribute))
-                .findFirst()
-                .orElse(QuizType.UNKNOWN);
-    }
-
-    @Override
-    public String convertToEntityAttribute(QuizType dbData) {
-        if (Objects.isNull(dbData)) {
-            return null;
-        }
-
-        return Arrays.stream(QuizType.values())
-                .filter(q -> q.getName().equals(dbData.getName()))
+                .filter(q -> q.getName().equals(attribute.getName()))
                 .findFirst()
                 .map(QuizType::getName)
                 .orElse(QuizType.UNKNOWN.getName());
     }
+
+    @Override
+    public QuizType convertToEntityAttribute(String dbData) {
+        if (StringUtils.isEmpty(dbData)) {
+            return null;
+        }
+
+        return Arrays.stream(QuizType.values())
+                .filter(q -> q.getName().equals(dbData))
+                .findFirst()
+                .orElse(QuizType.UNKNOWN);
+    }
+
 }
