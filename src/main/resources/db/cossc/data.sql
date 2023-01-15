@@ -1,0 +1,1 @@
+INSERT INTO cossc.QUIZ (quiz_id, title, description, user_id, type, created_date, created_by, updated_date, updated_by) VALUES (1, 'OS의 뜻은', 'desc', 1, 'multiple_choice', '2023-01-15 14:25:12', 'test', '2023-01-15 14:25:19', 'test');

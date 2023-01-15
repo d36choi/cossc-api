@@ -1,13 +1,8 @@
 package com.api.cossc.domain;
 
 import java.util.List;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -29,6 +24,10 @@ public class QuizEntity extends BaseTimeEntity {
 
   @Column(name = "description", nullable = false, columnDefinition = "TEXT")
   private String description;
+
+  @Column(name = "type")
+  @Convert(converter = QuizTypeConverter.class)
+  private QuizType type;
 
   @Column(name = "created_by", nullable = false)
   private String createdBy;
