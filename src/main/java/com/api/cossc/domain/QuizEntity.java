@@ -37,4 +37,12 @@ public class QuizEntity extends BaseTimeEntity {
 
   @OneToMany(mappedBy = "quizEntity")
   List<UserQuizEntity> userQuizEntitySet;
+
+  @OneToOne
+  @JoinColumn(name = "multiple_choice_question_id")
+  private MultipleChoiceQuizEntity multipleChoiceQuizEntity;
+
+  @OneToOne
+  @JoinColumn(name = "ox_choice_question_id")
+  private OXMultipleChoiceQuestionEntity oxMultipleChoiceQuestionEntity;
 }

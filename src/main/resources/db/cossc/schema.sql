@@ -5,6 +5,8 @@ DROP TABLE IF EXISTS `USER_QUIZ`;
 DROP TABLE IF EXISTS `QUIZ_TAG`;
 DROP TABLE IF EXISTS `TAG`;
 DROP TABLE IF EXISTS `QUIZ`;
+DROP TABLE IF EXISTS `OX_CHOICE_QUESTION`;
+DROP TABLE IF EXISTS `MULTIPLE_CHOICE_QUESTION`;
 DROP TABLE IF EXISTS `USER`;
 
 CREATE TABLE `TAG`
@@ -45,23 +47,26 @@ CREATE TABLE `USER`
 
 
 -- cossc.QUIZ definition
-CREATE TABLE `QUIZ`
+create table cossc.QUIZ
 (
-    `quiz_id`      bigint       NOT NULL AUTO_INCREMENT,
-    `title`        varchar(100) NOT NULL,
-    `description`  text         NOT NULL,
-    `user_id`      bigint       NOT NULL,
-    `type`         varchar(100) NOT NULL,
-    `created_date` datetime     NOT NULL,
-    `created_by`   varchar(255) NOT NULL,
-    `updated_date` datetime     NOT NULL,
-    `updated_by`   varchar(255) NOT NULL,
-    PRIMARY KEY (`quiz_id`),
-    KEY `QUIZ_FK` (`user_id`),
-    CONSTRAINT `QUIZ_FK` FOREIGN KEY (`user_id`) REFERENCES `USER` (`user_id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
+    quiz_id                     bigint auto_increment
+        primary key,
+    title                       varchar(100) not null,
+    description                 text         not null,
+    user_id                     bigint       not null,
+    type                        varchar(100) not null,
+    created_date                datetime     not null,
+    created_by                  varchar(255) not null,
+    updated_date                datetime     not null,
+    updated_by                  varchar(255) not null,
+    multiple_choice_question_id bigint       null,
+    ox_choice_question_id       bigint       null,
+    constraint QUIZ_FK
+        foreign key (user_id) references cossc.USER (user_id)
+)
+    charset = utf8mb4;
+
+
 
 
 -- cossc.QUIZ_TAG definition
@@ -135,3 +140,38 @@ CREATE TABLE `HISTORY`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
+
+-- cossc.MULTIPLE_CHOICE_QUESTION definition
+
+create table cossc.MULTIPLE_CHOICE_QUESTION
+(
+    choice_1                    varchar(255) not null invisible,
+    choice_2                    varchar(255) not null,
+    choice_3                    varchar(255) not null,
+    choice_4                    varchar(255) null,
+    multiple_choice_question_id bigint auto_increment
+        primary key,
+    answer_choice               int          null,
+    quiz_id                     bigint       null,
+    constraint MULTIPLE_CHOICE_QUESTION_QUIZ_quiz_id_fk
+        foreign key (quiz_id) references cossc.QUIZ (quiz_id)
+);
+alter table QUIZ
+add constraint QUIZ_FK_2
+    foreign key (multiple_choice_question_id) references cossc.MULTIPLE_CHOICE_QUESTION (multiple_choice_question_id);
+
+
+-- cossc.OX_CHOICE_QUESTION definition
+
+create table cossc.OX_CHOICE_QUESTION
+(
+    answer_choice  tinyint(1) not null,
+    quiz_id        bigint     not null,
+    ox_choice_question_id bigint     not null
+        primary key,
+    constraint OX_CHOICE_QUESTION_QUIZ_quiz_id_fk
+        foreign key (quiz_id) references cossc.QUIZ (quiz_id)
+);
+alter table QUIZ
+add constraint QUIZ_FK_3
+    foreign key (ox_choice_question_id) references cossc.OX_CHOICE_QUESTION (ox_choice_question_id);

@@ -32,26 +32,4 @@ public class UserQuizEntity {
     @JoinColumn(name = "quiz_id")
     private QuizEntity quizEntity;
 
-
-//    @Entity
-//class CourseRegistration {
-//
-//    @Id
-//    Long id;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "student_id")
-//    Student student;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "course_id")
-//    Course course;
-//
-//    LocalDateTime registeredAt;
-//
-//    int grade;
-//
-//    // additional properties
-//    // standard constructors, getters, and setters
-//}
 }

@@ -23,9 +23,9 @@ public class TagEntity extends BaseTimeEntity {
   @Column(name = "name", nullable = false, length = 100)
   private String name;
 
-  @Column(name = "createdBy", nullable = false)
+  @Column(name = "created_by", nullable = false)
   private String createdBy;
 
-  @Column(name = "updatedBy", nullable = false)
+  @Column(name = "updated_by", nullable = false)
   private String updatedBy;
 }
