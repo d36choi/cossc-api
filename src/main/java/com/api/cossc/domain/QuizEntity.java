@@ -44,5 +44,5 @@ public class QuizEntity extends BaseTimeEntity {
 
   @OneToOne
   @JoinColumn(name = "ox_choice_question_id")
-  private OXMultipleChoiceQuestionEntity oxMultipleChoiceQuestionEntity;
+  private OXChoiceQuestionEntity oxChoiceQuestionEntity;
 }

@@ -10,7 +10,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "OX_CHOICE_QUESTION")
-public class OXMultipleChoiceQuestionEntity {
+public class OXChoiceQuestionEntity {
 
 
     @Id
@@ -19,7 +19,7 @@ public class OXMultipleChoiceQuestionEntity {
     private Long id;
 
     @Column(name = "answer_choice")
-    private int answerChoice;
+    private Boolean answerChoice;
 
 }
 
