@@ -1,6 +1,7 @@
 package com.api.cossc.domain;
 
 
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -63,6 +64,8 @@ public class UserEntity extends BaseTimeEntity {
   @OneToMany(mappedBy = "userEntity")
   Set<UserQuizEntity> userQuizEntitySet;
 
+  @OneToMany(mappedBy = "userEntity")
+  List<HistoryEntity> historyEntities;
 
   @Builder
   public UserEntity(String email, String name, String oauthKey, String img, UserRole role,

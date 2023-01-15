@@ -1,5 +1,9 @@
 package com.api.cossc.repository;
 
-public class QuizRepository {
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface QuizRepository {
+
 
 }

@@ -9,6 +9,11 @@ public class QuizController {
 
     @GetMapping("/daily")
     public DailyQuizResponse getDailyQuiz() {
+        // user ID
+        // type 조회
+        // quiz 에서 type
+        // history filtering
+
         return DailyQuizResponse.builder()
                 .build();
     }
