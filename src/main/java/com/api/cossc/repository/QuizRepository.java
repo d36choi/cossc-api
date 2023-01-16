@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface QuizRepository extends JpaRepository<QuizEntity, Long> {
 
-    Optional<List<QuizEntity>> findAllByType(QuizType type);
-    Optional<List<QuizEntity>> findAllByTagEntity_Id(Long id);
+    List<QuizEntity> findAllByType(QuizType type);
+    List<QuizEntity> findAllByTagEntity_Id(Long id);
 
 }

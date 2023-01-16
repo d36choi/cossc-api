@@ -19,13 +19,13 @@ public class MultipleChoiceQuizEntity {
     @Column(name = "multiple_choice_question_id")
     private Long id;
 
-    @Column(name = "choice_1", length = 255)
+    @Column(name = "choice_1")
     private String choice1;
-    @Column(name = "choice_2", length = 255)
+    @Column(name = "choice_2")
     private String choice2;
-    @Column(name = "choice_3", length = 255)
+    @Column(name = "choice_3")
     private String choice3;
-    @Column(name = "choice_4", length = 255)
+    @Column(name = "choice_4")
     private String choice4;
 
     @Column(name = "answer_choice")

@@ -10,5 +10,5 @@ import java.util.Optional;
 @Repository
 public interface HistoryRepository extends JpaRepository<HistoryEntity, Long> {
 
-    Optional<List<HistoryEntity>> findAllByUserEntity_Id(Long userId);
+    List<HistoryEntity> findAllByUserEntity_Id(Long userId);
 }

@@ -10,8 +10,13 @@ import com.api.cossc.repository.QuizRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+
 @RequiredArgsConstructor
 @Service
 public class QuizServiceImpl implements QuizService {
@@ -23,15 +28,15 @@ public class QuizServiceImpl implements QuizService {
     @Override
     public DailyQuizResponse getDailyQuiz(DailyQuizRequest dailyQuizRequest) {
 
-        Optional<List<QuizEntity>> quizEntities = quizRepository.findAllByTagEntity_Id(dailyQuizRequest.getTagId());
+        List<QuizEntity> quizEntities = quizRepository.findAllByTagEntity_Id(dailyQuizRequest.getTagId());
 
-        Optional<List<HistoryEntity>> historyEntities = historyRepository.findAllByUserEntity_Id(dailyQuizRequest.getUserId());
+        List<HistoryEntity> historyEntities = historyRepository.findAllByUserEntity_Id(dailyQuizRequest.getUserId());
 
-        Set<Long> quizSetSolved = historyEntities.orElse(Collections.emptyList())
-                .stream().map(historyEntity -> historyEntity.getQuizEntity().getId())
+        Set<Long> quizSetSolved = historyEntities.stream()
+                .map(historyEntity -> historyEntity.getQuizEntity().getId())
                 .collect(Collectors.toSet());
 
-        List<QuizResponse> quizResponses = new ArrayList<>(quizEntities.orElse(Collections.emptyList())
+        List<QuizResponse> quizResponses = new ArrayList<>(quizEntities
                 .stream().filter(quiz -> !quizSetSolved.contains(quiz.getId()))
                 .map(QuizResponse::of)
                 .toList());

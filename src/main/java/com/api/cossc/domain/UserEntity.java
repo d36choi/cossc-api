@@ -46,6 +46,7 @@ public class UserEntity extends BaseTimeEntity {
   private String img;
 
   @Enumerated(EnumType.STRING)
+  @Column(name = "role")
   private UserRole role;
 
   @Enumerated(EnumType.STRING)
