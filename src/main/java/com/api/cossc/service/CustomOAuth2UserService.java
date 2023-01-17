@@ -1,17 +1,18 @@
 package com.api.cossc.service;
 
 import com.api.cossc.domain.AuthProvider;
-import com.api.cossc.domain.OAuth2UserInfo;
-import com.api.cossc.domain.OAuth2UserInfoFactory;
-import com.api.cossc.domain.UserRole;
+import com.api.cossc.dto.oauth.OAuth2UserInfo;
+import com.api.cossc.dto.oauth.OAuth2UserInfoFactory;
+import com.api.cossc.dto.oauth.UserRole;
 import com.api.cossc.exception.OAuthProcessingException;
 import com.api.cossc.repository.UserRepository;
 import com.api.cossc.security.CustomUserDetails;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import com.api.cossc.domain.User;
+import com.api.cossc.domain.UserEntity;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -36,34 +37,40 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
   // 획득한 유저정보를 Java Model과 맵핑하고 프로세스 진행
   private OAuth2User process(OAuth2UserRequest oAuth2UserRequest, OAuth2User oAuth2User) {
     AuthProvider authProvider = AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId().toUpperCase());
-    OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(authProvider, oAuth2User.getAttributes());
+    OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(authProvider, oAuth2User);
 
-    if (userInfo.getEmail().isEmpty()) {
-      throw new OAuthProcessingException("Email not found from OAuth2 provider");
-    }
-    Optional<User> userOptional = userRepository.findByEmail(userInfo.getEmail());
-    User user;
+    String oauthKey = userInfo.getKey();
 
-    if (userOptional.isPresent()) {		// 이미 가입된 경우
-      user = userOptional.get();
-      if (authProvider != user.getAuthProvider()) {
+    Optional<UserEntity> userOptional = userRepository.findByOauthKeyOrEmail(oauthKey, userInfo.getEmail());
+    UserEntity userEntity;
+
+    if (userOptional.isPresent()) {
+      userEntity = userOptional.get();
+      if (authProvider != userEntity.getAuthProvider()) {
         throw new OAuthProcessingException("Wrong Match Auth Provider");
       }
 
-    } else {			// 가입되지 않은 경우
-      user = createUser(userInfo, authProvider);
+    } else {
+      userEntity = createUser(userInfo, oauthKey, authProvider);
     }
-    return CustomUserDetails.create(user, oAuth2User.getAttributes());
+    return CustomUserDetails.create(userEntity, oAuth2User.getAttributes());
   }
 
-  private User createUser(OAuth2UserInfo userInfo, AuthProvider authProvider) {
-    User user = User.builder()
+  private UserEntity createUser(OAuth2UserInfo userInfo, String oauthKey, AuthProvider authProvider) {
+
+    String name = Optional.of(userInfo.getName()).orElse(RandomStringUtils.random(10, true, true));
+
+    UserEntity userEntity = UserEntity.builder()
         .email(userInfo.getEmail())
         .img(userInfo.getImageUrl())
+        .name(name)
         .role(UserRole.USER)
-//        .state(UserState.ACT)
+        .oauthKey(oauthKey)
         .authProvider(authProvider)
+        .createdBy(name)
+        .updatedBy(name)
         .build();
-    return userRepository.save(user);
+
+    return userRepository.save(userEntity);
   }
 }

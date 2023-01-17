@@ -13,7 +13,6 @@ import java.util.Date;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,13 +30,17 @@ public class JwtTokenProvider {
   private final Long ACCESS_TOKEN_EXPIRE_LENGTH = 1000L * 60 * 60;		// 1hour
   private final Long REFRESH_TOKEN_EXPIRE_LENGTH = 1000L * 60 * 60 * 24 * 7;	// 1week
   private final String AUTHORITIES_KEY = "role";
+  private final String ISSUER = "cossc";
 
-  @Autowired
-  private UserRepository userRepository;
+  private final UserRepository userRepository;
 
-  public JwtTokenProvider(@Value("${app.auth.token.secret-key}")String secretKey, @Value("${app.auth.token.refresh-cookie-key}")String cookieKey) {
+  public JwtTokenProvider(@Value("${app.auth.token.secret-key}") String secretKey,
+                          @Value("${app.auth.token.refresh-cookie-key}") String cookieKey,
+                          UserRepository userRepository) {
+
     this.SECRET_KEY = Base64.getEncoder().encodeToString(secretKey.getBytes());
     this.COOKIE_REFRESH_TOKEN_KEY = cookieKey;
+    this.userRepository = userRepository;
   }
 
   public String createAccessToken(Authentication authentication) {
@@ -55,9 +58,10 @@ public class JwtTokenProvider {
         .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
         .setSubject(userId)
         .claim(AUTHORITIES_KEY, role)
-        .setIssuer("debrains")
+        .setIssuer(ISSUER)
         .setIssuedAt(now)
         .setExpiration(validity)
+        .setAudience(user.getUsername())
         .compact();
   }
 
@@ -67,7 +71,7 @@ public class JwtTokenProvider {
 
     String refreshToken = Jwts.builder()
         .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
-        .setIssuer("debrains")
+        .setIssuer(ISSUER)
         .setIssuedAt(now)
         .setExpiration(validity)
         .compact();
@@ -100,7 +104,7 @@ public class JwtTokenProvider {
         Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
             .map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 
-    CustomUserDetails principal = new CustomUserDetails(Long.valueOf(claims.getSubject()), "", authorities);
+    CustomUserDetails principal = new CustomUserDetails(Long.valueOf(claims.getSubject()), claims.getAudience(), authorities);
 
     return new UsernamePasswordAuthenticationToken(principal, "", authorities);
   }
