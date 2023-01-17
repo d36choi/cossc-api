@@ -1,6 +1,6 @@
 package com.api.cossc.security;
 
-import com.api.cossc.domain.User;
+import com.api.cossc.domain.UserEntity;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -10,6 +10,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+
+import static com.api.cossc.dto.oauth.UserRole.*;
 
 @Getter
 public class CustomUserDetails implements UserDetails, OAuth2User {
@@ -24,19 +26,19 @@ public class CustomUserDetails implements UserDetails, OAuth2User {
     this.authorities = authorities;
   }
 
-  public static CustomUserDetails create(User user) {
+  public static CustomUserDetails create(UserEntity userEntity) {
     List<GrantedAuthority> authorities = Collections.
-        singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+        singletonList(new SimpleGrantedAuthority(USER.getRole()));
 
     return new CustomUserDetails(
-        user.getId(),
-        user.getEmail(),
+        userEntity.getId(),
+        userEntity.getEmail(),
         authorities
     );
   }
 
-  public static CustomUserDetails create(User user, Map<String, Object> attributes) {
-    CustomUserDetails userDetails = CustomUserDetails.create(user);
+  public static CustomUserDetails create(UserEntity userEntity, Map<String, Object> attributes) {
+    CustomUserDetails userDetails = CustomUserDetails.create(userEntity);
     userDetails.setAttributes(attributes);
     return userDetails;
   }

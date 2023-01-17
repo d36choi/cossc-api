@@ -29,11 +29,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
     String token = parseBearerToken(request);
 
-    // Validation Access Token
     if (StringUtils.hasText(token) && tokenProvider.validateToken(token)) {
+
       Authentication authentication = tokenProvider.getAuthentication(token);
       SecurityContextHolder.getContext().setAuthentication(authentication);
-      log.debug(authentication.getName() + "의 인증정보 저장");
+      log.debug("userId {} 의 인증정보 저장", authentication.getName());
+
     } else {
       log.debug("유효한 JWT 토큰이 없습니다.");
     }

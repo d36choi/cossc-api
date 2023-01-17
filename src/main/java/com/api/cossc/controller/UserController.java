@@ -1,6 +1,6 @@
 package com.api.cossc.controller;
 
-import com.api.cossc.domain.User;
+import com.api.cossc.domain.UserEntity;
 import com.api.cossc.repository.UserRepository;
 import com.api.cossc.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class UserController {
 
   @GetMapping("/me")
   @PreAuthorize("hasRole('USER')")
-  public User getCurrentUser(@AuthenticationPrincipal CustomUserDetails user) {
+  public UserEntity getCurrentUser(@AuthenticationPrincipal CustomUserDetails user) {
     return userRepository.findById(user.getId()).orElseThrow(() -> new IllegalStateException("not found user"));
   }
 }
