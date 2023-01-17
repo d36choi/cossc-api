@@ -1,8 +1,8 @@
-package com.api.cossc.domain;
+package com.api.cossc.dto.oauth;
 
 
 public enum UserRole {
-  GUEST("ROLE_ADMIN", "관리자"),
+  ADMIN("ROLE_ADMIN", "관리자"),
   USER("ROLE_USER", "일반 사용자");
 
   private final String role;
