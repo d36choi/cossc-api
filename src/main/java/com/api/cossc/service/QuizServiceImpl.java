@@ -2,9 +2,7 @@ package com.api.cossc.service;
 
 import com.api.cossc.domain.HistoryEntity;
 import com.api.cossc.domain.QuizEntity;
-import com.api.cossc.dto.quiz.DailyQuizRequest;
-import com.api.cossc.dto.quiz.DailyQuizResponse;
-import com.api.cossc.dto.quiz.QuizResponse;
+import com.api.cossc.dto.quiz.*;
 import com.api.cossc.repository.HistoryRepository;
 import com.api.cossc.repository.QuizRepository;
 import lombok.RequiredArgsConstructor;
@@ -49,7 +47,14 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    public DailyQuizResponse create() {
-        return null;
+    public QuizCreationResponse create(QuizCreationRequest quizCreationRequest) {
+
+        QuizEntity quizEntity = quizRepository.findById(quizCreationRequest.getId()).orElse(QuizEntity.emptyOf());
+
+        QuizEntity toBeSaved = quizEntity.of(quizCreationRequest);
+        QuizEntity saved = quizRepository.save(toBeSaved);
+
+        return QuizCreationResponse.of(saved);
+
     }
 }

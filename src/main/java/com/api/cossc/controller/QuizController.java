@@ -2,6 +2,8 @@ package com.api.cossc.controller;
 
 import com.api.cossc.dto.quiz.DailyQuizRequest;
 import com.api.cossc.dto.quiz.DailyQuizResponse;
+import com.api.cossc.dto.quiz.QuizCreationRequest;
+import com.api.cossc.dto.quiz.QuizCreationResponse;
 import com.api.cossc.service.QuizService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -19,12 +21,12 @@ public class QuizController {
         return quizService.getDailyQuiz(dailyQuizRequest);
     }
     @PostMapping("/quiz/create")
-    public DailyQuizResponse create(DailyQuizRequest dailyQuizRequest) {
+    public QuizCreationResponse create(QuizCreationRequest quizCreationRequest) {
 
-        return null;
+        return quizService.create(quizCreationRequest);
     }
     @PatchMapping("/quiz/update")
-    public DailyQuizResponse update(DailyQuizRequest dailyQuizRequest) {
+    public QuizCreationResponse update(QuizCreationRequest quizCreationRequest) {
 
         return null;
     }
