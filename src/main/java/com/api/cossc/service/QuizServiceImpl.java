@@ -33,6 +33,7 @@ public class QuizServiceImpl implements QuizService {
         List<HistoryEntity> historyEntities = historyRepository.findAllByUserEntity_Id(dailyQuizRequest.getUserId());
 
         Set<Long> quizSetSolved = historyEntities.stream()
+                .filter(historyEntity -> !historyEntity.getSolved())
                 .map(historyEntity -> historyEntity.getQuizEntity().getId())
                 .collect(Collectors.toSet());
 

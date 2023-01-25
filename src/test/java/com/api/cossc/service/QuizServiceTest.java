@@ -1,31 +1,38 @@
 package com.api.cossc.service;
 
 import com.api.cossc.domain.QuizEntity;
+import com.api.cossc.dto.DailyQuizRequest;
+import com.api.cossc.dto.DailyQuizResponse;
+import com.api.cossc.dto.QuizResponse;
 import com.api.cossc.repository.QuizRepository;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 //@Sql("/db/cossc/data.sql")
-@DataJpaTest
+@SpringBootTest
+//@RunWith(SpringRunner.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("test")
 @Testcontainers
 class QuizServiceTest {
     @Autowired
     public QuizRepository quizRepository;
+
+    @Autowired
+    public QuizServiceImpl quizService;
 
     @Container
     public static MySQLContainer<?> mysql = new MySQLContainer<>("mysql:latest")
@@ -46,6 +53,12 @@ class QuizServiceTest {
     public void test() {
         List<QuizEntity> list = quizRepository.findAll();
 
-        list.forEach(System.out::println);
+        DailyQuizRequest dailyQuizRequest = new DailyQuizRequest();
+        dailyQuizRequest.setTagId(1L);
+        dailyQuizRequest.setUserId(1L);
+        DailyQuizResponse dailyQuiz = quizService.getDailyQuiz(dailyQuizRequest);
+        for (QuizResponse response : dailyQuiz.getQuizResponses()) {
+            System.out.println("response = " + response);
+        }
     }
 }
