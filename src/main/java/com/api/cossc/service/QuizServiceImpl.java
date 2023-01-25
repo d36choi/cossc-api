@@ -2,14 +2,13 @@ package com.api.cossc.service;
 
 import com.api.cossc.domain.HistoryEntity;
 import com.api.cossc.domain.QuizEntity;
-import com.api.cossc.dto.DailyQuizRequest;
-import com.api.cossc.dto.DailyQuizResponse;
-import com.api.cossc.dto.QuizResponse;
+import com.api.cossc.dto.quiz.DailyQuizRequest;
+import com.api.cossc.dto.quiz.DailyQuizResponse;
+import com.api.cossc.dto.quiz.QuizResponse;
 import com.api.cossc.repository.HistoryRepository;
 import com.api.cossc.repository.QuizRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,5 +46,10 @@ public class QuizServiceImpl implements QuizService {
         return DailyQuizResponse.builder()
                 .quizResponses(quizResponses.subList(0,3))
                 .build();
+    }
+
+    @Override
+    public DailyQuizResponse create() {
+        return null;
     }
 }

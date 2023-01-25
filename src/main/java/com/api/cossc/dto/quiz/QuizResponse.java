@@ -1,9 +1,9 @@
-package com.api.cossc.dto;
+package com.api.cossc.dto.quiz;
 
 import com.api.cossc.domain.QuizEntity;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+
 @Getter
 
 public class QuizResponse {

@@ -1,20 +1,17 @@
 package com.api.cossc.service;
 
 import com.api.cossc.domain.QuizEntity;
-import com.api.cossc.dto.DailyQuizRequest;
-import com.api.cossc.dto.DailyQuizResponse;
-import com.api.cossc.dto.QuizResponse;
+import com.api.cossc.dto.quiz.DailyQuizRequest;
+import com.api.cossc.dto.quiz.DailyQuizResponse;
+import com.api.cossc.dto.quiz.QuizResponse;
 import com.api.cossc.repository.QuizRepository;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
