@@ -19,7 +19,7 @@ spring:
 
   sql:
     init:
-      mode: always
+      mode: never
       schema-locations: classpath*:db/cossc/schema.sql
       data-locations: classpath*:db/cossc/data.sql
       platform: mysql

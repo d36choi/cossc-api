@@ -30,7 +30,7 @@ public class UserEntity extends BaseTimeEntity {
   private Long id;
 
 
-  @Column(name = "email", unique = true, nullable = false)
+  @Column(name = "email")
   private String email;
 
   @Column(name = "name", unique = true)

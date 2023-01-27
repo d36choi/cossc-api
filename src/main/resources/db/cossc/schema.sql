@@ -36,7 +36,7 @@ CREATE TABLE `USER`
     `user_id`       bigint       NOT NULL AUTO_INCREMENT,
     `auth_provider` varchar(255) DEFAULT NULL,
     `description`   varchar(255) DEFAULT NULL,
-    `email`         varchar(255) NOT NULL,
+    `email`         varchar(255),
     `img`           varchar(255) DEFAULT NULL,
     `name`          varchar(255) DEFAULT NULL,
     `refresh_token` varchar(255) DEFAULT NULL,
