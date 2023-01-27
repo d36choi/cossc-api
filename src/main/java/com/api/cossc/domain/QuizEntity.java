@@ -39,11 +39,11 @@ public class QuizEntity extends BaseTimeEntity {
   @OneToMany(mappedBy = "quizEntity")
   List<UserQuizEntity> userQuizEntitySet;
 
-  @OneToOne
+  @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "multiple_choice_question_id")
   private MultipleChoiceQuizEntity multipleChoiceQuizEntity;
 
-  @OneToOne
+  @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "ox_choice_question_id")
   private OXChoiceQuestionEntity oxChoiceQuestionEntity;
 
