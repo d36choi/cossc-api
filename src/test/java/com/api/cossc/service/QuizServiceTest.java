@@ -53,7 +53,7 @@ class QuizServiceTest extends ContainerInitialization {
 
     @DisplayName("quiz가 부족할때 예외를 던진다")
     @Test
-    public void test() {
+    public void should_throw_exception_if_dont_have_enough_quiz() {
         DailyQuizRequest dailyQuizRequest = new DailyQuizRequest();
         dailyQuizRequest.setTagId(1L);
         dailyQuizRequest.setUserId(1L);
