@@ -28,10 +28,6 @@ public class TagEntity extends BaseTimeEntity {
     this.id = id;
   }
 
-  private TagEntity(Long id) {
-    this.id = id;
-  }
-
   private TagEntity(Long id, String name) {
     this.id = id;
     this.name = name;

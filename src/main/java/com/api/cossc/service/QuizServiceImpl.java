@@ -60,12 +60,25 @@ public class QuizServiceImpl implements QuizService {
     public QuizCreationResponse create(QuizCreationRequest quizCreationRequest) {
 
         TagEntity tagEntity = tagRepository.findById(quizCreationRequest.getTagId()).orElseThrow(() -> new IllegalArgumentException(""));
+        QuizEntity quizEntity;
+        if (quizCreationRequest.getId() == null) {
+            quizEntity = QuizEntity.emptyOf();
+        } else {
+            quizEntity = quizRepository.findById(quizCreationRequest.getId()).orElseThrow(IllegalArgumentException::new);
+        }
 
-        QuizEntity quizEntity = QuizEntity.emptyOf();
         QuizEntity toBeSaved = quizEntity.of(quizCreationRequest, tagEntity);
         QuizEntity saved = quizRepository.save(toBeSaved);
 
         return QuizCreationResponse.of(saved);
 
+    }
+
+    @Override
+    public QuizDeletionResponse delete(QuizDeletionRequest quizDeletionRequest) {
+
+        quizRepository.deleteById(quizDeletionRequest.getId());
+
+        return QuizDeletionResponse.of(quizDeletionRequest.getId());
     }
 }
