@@ -64,8 +64,8 @@ public class QuizEntity extends BaseTimeEntity {
     this.title = quizCreationRequest.getTitle();
     this.description = quizCreationRequest.getDescription();
     this.type = quizCreationRequest.getType();
-    this.createdBy = "test";
-    this.updatedBy = "test";
+    this.createdBy = quizCreationRequest.getCreatedBy();
+    this.updatedBy = quizCreationRequest.getUpdatedBy();
     this.tagEntity = tagEntity;
     return this;
   }

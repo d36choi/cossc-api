@@ -4,7 +4,6 @@ import com.api.cossc.domain.QuizEntity;
 import com.api.cossc.domain.QuizType;
 import com.api.cossc.dto.quiz.*;
 import com.api.cossc.repository.QuizRepository;
-import com.api.cossc.repository.TagRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -17,7 +16,6 @@ import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -30,7 +28,6 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 
-@Sql(value = "/db/cossc/test.sql")
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("test")
@@ -42,15 +39,11 @@ class QuizServiceTest {
     @Autowired
     private QuizServiceImpl quizService;
 
-    @Autowired
-    private TagRepository tagRepository;
-
     @Container
     public static MySQLContainer<?> mysql = new MySQLContainer<>("mysql:latest")
             .withDatabaseName("cossc")
             .withUsername("root")
             .withPassword("root");
-//            .withInitScript("db/cossc/data.sql");
 
     @DynamicPropertySource
     public static void properties(DynamicPropertyRegistry registry) {
