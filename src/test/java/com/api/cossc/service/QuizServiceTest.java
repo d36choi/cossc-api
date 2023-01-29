@@ -1,5 +1,6 @@
 package com.api.cossc.service;
 
+import com.api.cossc.ContainerInitialization;
 import com.api.cossc.domain.QuizEntity;
 import com.api.cossc.domain.QuizType;
 import com.api.cossc.dto.quiz.*;
@@ -14,10 +15,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.MySQLContainer;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import javax.sql.DataSource;
@@ -32,26 +29,12 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("test")
 @Testcontainers
-class QuizServiceTest {
+class QuizServiceTest extends ContainerInitialization {
     @Autowired
     private QuizRepository quizRepository;
 
     @Autowired
-    private QuizServiceImpl quizService;
-
-    @Container
-    public static MySQLContainer<?> mysql = new MySQLContainer<>("mysql:latest")
-            .withDatabaseName("cossc")
-            .withUsername("root")
-            .withPassword("root");
-
-    @DynamicPropertySource
-    public static void properties(DynamicPropertyRegistry registry) {
-        System.out.println("mysql.getJdbcUrl() = " + mysql.getJdbcUrl());
-        registry.add("spring.datasource.url", mysql::getJdbcUrl);
-        registry.add("spring.datasource.username", mysql::getUsername);
-        registry.add("spring.datasource.password", mysql::getPassword);
-    }
+    private QuizService quizService;
 
     @BeforeAll
     public static void setup(@Autowired DataSource dataSource) {
