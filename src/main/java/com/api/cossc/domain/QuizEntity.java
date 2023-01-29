@@ -39,11 +39,11 @@ public class QuizEntity extends BaseTimeEntity {
   @OneToMany(mappedBy = "quizEntity")
   List<UserQuizEntity> userQuizEntitySet;
 
-  @OneToOne(fetch = FetchType.LAZY)
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
   @JoinColumn(name = "multiple_choice_question_id")
   private MultipleChoiceQuizEntity multipleChoiceQuizEntity;
 
-  @OneToOne(fetch = FetchType.LAZY)
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
   @JoinColumn(name = "ox_choice_question_id")
   private OXChoiceQuestionEntity oxChoiceQuestionEntity;
 
@@ -59,11 +59,14 @@ public class QuizEntity extends BaseTimeEntity {
     return new QuizEntity();
   }
 
-  public QuizEntity of(QuizCreationRequest quizCreationRequest) {
+  public QuizEntity of(QuizCreationRequest quizCreationRequest, TagEntity tagEntity) {
     this.id = quizCreationRequest.getId();
     this.title = quizCreationRequest.getTitle();
     this.description = quizCreationRequest.getDescription();
     this.type = quizCreationRequest.getType();
+    this.createdBy = "test";
+    this.updatedBy = "test";
+    this.tagEntity = tagEntity;
     return this;
   }
 }

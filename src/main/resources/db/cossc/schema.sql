@@ -1,21 +1,21 @@
 -- cossc.TAG definition
-DROP TABLE IF EXISTS `HISTORY`;
-DROP TABLE IF EXISTS `ANSWER`;
-DROP TABLE IF EXISTS `USER_QUIZ`;
-DROP TABLE IF EXISTS `QUIZ_TAG`;
-ALTER TABLE `USER`
-    DROP CONSTRAINT `USER_FK`;
-DROP TABLE IF EXISTS `TAG`;
-ALTER TABLE `QUIZ`
-    DROP CONSTRAINT `QUIZ_FK`;
-ALTER TABLE `QUIZ`
-    DROP CONSTRAINT `QUIZ_FK_2`;
-ALTER TABLE `QUIZ`
-    DROP CONSTRAINT `QUIZ_FK_3`;
-DROP TABLE IF EXISTS `OX_CHOICE_QUESTION`;
-DROP TABLE IF EXISTS `MULTIPLE_CHOICE_QUESTION`;
-DROP TABLE IF EXISTS `QUIZ`;
-DROP TABLE IF EXISTS `USER`;
+# DROP TABLE IF EXISTS `HISTORY`;
+# DROP TABLE IF EXISTS `ANSWER`;
+# DROP TABLE IF EXISTS `USER_QUIZ`;
+# DROP TABLE IF EXISTS `QUIZ_TAG`;
+# ALTER TABLE `USER`
+#     DROP CONSTRAINT `USER_FK`;
+# DROP TABLE IF EXISTS `TAG`;
+# ALTER TABLE `QUIZ`
+#     DROP CONSTRAINT `QUIZ_FK`;
+# ALTER TABLE `QUIZ`
+#     DROP CONSTRAINT `QUIZ_FK_2`;
+# ALTER TABLE `QUIZ`
+#     DROP CONSTRAINT `QUIZ_FK_3`;
+# DROP TABLE IF EXISTS `OX_CHOICE_QUESTION`;
+# DROP TABLE IF EXISTS `MULTIPLE_CHOICE_QUESTION`;
+# DROP TABLE IF EXISTS `QUIZ`;
+# DROP TABLE IF EXISTS `USER`;
 
 CREATE TABLE `TAG`
 (
@@ -75,15 +75,11 @@ create table cossc.QUIZ
     updated_by                  varchar(255) not null,
     multiple_choice_question_id bigint       null,
     ox_choice_question_id       bigint       null,
-    `user_id`       bigint       NOT NULL,
     `tag_id`       bigint       NOT NULL,
-    constraint QUIZ_FK_AUTHOR
-        foreign key (`user_id`) references cossc.USER (`user_id`),
     constraint QUIZ_FK_TAG
         foreign key (`tag_id`) references cossc.TAG (`tag_id`)
 
-)
-    charset = utf8mb4;
+) charset = utf8mb4;
 
 
 

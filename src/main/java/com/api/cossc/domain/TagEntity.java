@@ -1,10 +1,9 @@
 package com.api.cossc.domain;
 
-import javax.persistence.*;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.util.List;
 
 @Getter
@@ -21,12 +20,25 @@ public class TagEntity extends BaseTimeEntity {
   @Column(name = "name", nullable = false, length = 100)
   private String name;
 
-  @Column(name = "created_by", nullable = false)
-  private String createdBy;
-
-  @Column(name = "updated_by", nullable = false)
-  private String updatedBy;
-
   @OneToMany(mappedBy = "tagEntity")
   List<QuizEntity> quizEntities;
+
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  private TagEntity(Long id) {
+    this.id = id;
+  }
+
+  private TagEntity(Long id, String name) {
+    this.id = id;
+    this.name = name;
+  }
+
+  public static TagEntity of(Long id, String name) {
+    return new TagEntity(id, name);
+  }
+
 }

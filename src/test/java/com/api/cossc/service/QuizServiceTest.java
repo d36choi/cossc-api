@@ -1,10 +1,14 @@
 package com.api.cossc.service;
 
-import com.api.cossc.domain.QuizEntity;
+import com.api.cossc.domain.QuizType;
+import com.api.cossc.domain.TagEntity;
 import com.api.cossc.dto.quiz.DailyQuizRequest;
-import com.api.cossc.dto.quiz.DailyQuizResponse;
-import com.api.cossc.dto.quiz.QuizResponse;
+import com.api.cossc.dto.quiz.QuizCreationRequest;
+import com.api.cossc.dto.quiz.QuizCreationResponse;
 import com.api.cossc.repository.QuizRepository;
+import com.api.cossc.repository.TagRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -16,9 +20,9 @@ import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.util.List;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 
-//@Sql("/db/cossc/data.sql")
 @SpringBootTest
 //@RunWith(SpringRunner.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -26,10 +30,13 @@ import java.util.List;
 @Testcontainers
 class QuizServiceTest {
     @Autowired
-    public QuizRepository quizRepository;
+    private QuizRepository quizRepository;
 
     @Autowired
-    public QuizServiceImpl quizService;
+    private QuizServiceImpl quizService;
+
+    @Autowired
+    private TagRepository tagRepository;
 
     @Container
     public static MySQLContainer<?> mysql = new MySQLContainer<>("mysql:latest")
@@ -46,16 +53,33 @@ class QuizServiceTest {
         registry.add("spring.datasource.password", mysql::getPassword);
     }
 
+    @BeforeEach
+    public void flush() {
+        quizRepository.deleteAll();
+    }
+
+    @DisplayName("quiz가 부족할때 예외를 던진다")
     @Test
     public void test() {
-        List<QuizEntity> list = quizRepository.findAll();
-
         DailyQuizRequest dailyQuizRequest = new DailyQuizRequest();
         dailyQuizRequest.setTagId(1L);
         dailyQuizRequest.setUserId(1L);
-        DailyQuizResponse dailyQuiz = quizService.getDailyQuiz(dailyQuizRequest);
-        for (QuizResponse response : dailyQuiz.getQuizResponses()) {
-            System.out.println("response = " + response);
-        }
+        Throwable throwable = catchThrowable(() -> quizService.getDailyQuiz(dailyQuizRequest));
+
+        assertThat(throwable).isInstanceOf(Exception.class).hasMessageContaining("부족");
+    }
+
+    @DisplayName("quiz를 저장할 수 있다")
+    @Test
+    public void should_create() {
+        tagRepository.save(TagEntity.of(1L, "python"));
+        tagRepository.save(TagEntity.of(2L, "python2"));
+        tagRepository.save(TagEntity.of(3L, "python3"));
+
+        QuizCreationRequest quizCreationRequest = QuizCreationRequest.of(null, "test", "test", QuizType.OX, 1L);
+        QuizCreationResponse quizCreationResponse = quizService.create(quizCreationRequest);
+
+
+        assertThat(quizCreationResponse).isNotNull();
     }
 }

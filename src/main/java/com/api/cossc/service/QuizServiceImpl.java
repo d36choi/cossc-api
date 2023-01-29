@@ -2,11 +2,14 @@ package com.api.cossc.service;
 
 import com.api.cossc.domain.HistoryEntity;
 import com.api.cossc.domain.QuizEntity;
+import com.api.cossc.domain.TagEntity;
 import com.api.cossc.dto.quiz.*;
 import com.api.cossc.repository.HistoryRepository;
 import com.api.cossc.repository.QuizRepository;
+import com.api.cossc.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,8 +23,10 @@ public class QuizServiceImpl implements QuizService {
 
     private final QuizRepository quizRepository;
     private final HistoryRepository historyRepository;
+    private final TagRepository tagRepository;
 
 
+    @Transactional(readOnly = true)
     @Override
     public DailyQuizResponse getDailyQuiz(DailyQuizRequest dailyQuizRequest) {
 
@@ -39,19 +44,25 @@ public class QuizServiceImpl implements QuizService {
                 .map(QuizResponse::of)
                 .toList());
 
+        if (quizResponses.size() < 3) {
+            throw new RuntimeException("퀴즈가 부족합니다");
+        }
+
         Collections.shuffle(quizResponses);
 
         return DailyQuizResponse.builder()
-                .quizResponses(quizResponses.subList(0,3))
+                .quizResponses(quizResponses.subList(0, 3))
                 .build();
     }
 
+    @Transactional
     @Override
     public QuizCreationResponse create(QuizCreationRequest quizCreationRequest) {
 
-        QuizEntity quizEntity = quizRepository.findById(quizCreationRequest.getId()).orElse(QuizEntity.emptyOf());
+        TagEntity tagEntity = tagRepository.findById(quizCreationRequest.getTagId()).orElseThrow(() -> new IllegalArgumentException(""));
 
-        QuizEntity toBeSaved = quizEntity.of(quizCreationRequest);
+        QuizEntity quizEntity = QuizEntity.emptyOf();
+        QuizEntity toBeSaved = quizEntity.of(quizCreationRequest, tagEntity);
         QuizEntity saved = quizRepository.save(toBeSaved);
 
         return QuizCreationResponse.of(saved);

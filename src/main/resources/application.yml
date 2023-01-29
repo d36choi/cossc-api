@@ -56,14 +56,14 @@ spring:
     database: MYSQL
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
   sql:
     init:
-      mode: always
+      mode: never
       schema-locations: classpath*:db/cossc/schema.sql
       data-locations: classpath*:db/cossc/data.sql
 #    username: root
