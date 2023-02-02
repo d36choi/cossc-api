@@ -1,6 +1,7 @@
 package com.api.cossc.service;
 
 import com.api.cossc.domain.AuthProvider;
+import com.api.cossc.domain.UserEntity;
 import com.api.cossc.dto.oauth.OAuth2UserInfo;
 import com.api.cossc.dto.oauth.OAuth2UserInfoFactory;
 import com.api.cossc.dto.oauth.UserRole;
@@ -10,8 +11,6 @@ import com.api.cossc.security.CustomUserDetails;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import com.api.cossc.domain.UserEntity;
-
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;

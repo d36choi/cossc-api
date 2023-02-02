@@ -1,22 +1,14 @@
 package com.api.cossc.domain;
 
 
-import java.util.List;
-import java.util.Set;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
 import com.api.cossc.dto.oauth.UserRole;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @NoArgsConstructor
@@ -30,7 +22,7 @@ public class UserEntity extends BaseTimeEntity {
   private Long id;
 
 
-  @Column(name = "email", unique = true, nullable = false)
+  @Column(name = "email")
   private String email;
 
   @Column(name = "name", unique = true)
@@ -44,6 +36,9 @@ public class UserEntity extends BaseTimeEntity {
 
   @Column(name = "img")
   private String img;
+
+  @Column(name = "level")
+  private String level;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "role")
@@ -68,13 +63,19 @@ public class UserEntity extends BaseTimeEntity {
   @OneToMany(mappedBy = "userEntity")
   List<HistoryEntity> historyEntities;
 
+  @ManyToOne(targetEntity = TagEntity.class, fetch = FetchType.LAZY)
+  @JoinColumn(name = "tag_id")
+  private TagEntity tagEntity;
+
+
   @Builder
-  public UserEntity(String email, String name, String oauthKey, String img, UserRole role,
+  public UserEntity(String email, String name, String oauthKey, String img, String level, UserRole role,
                     AuthProvider authProvider, String createdBy, String updatedBy) {
     this.email = email;
     this.name = name;
     this.oauthKey = oauthKey;
     this.img = img;
+    this.level = level;
     this.role = role;
     this.authProvider = authProvider;
     this.createdBy = createdBy;

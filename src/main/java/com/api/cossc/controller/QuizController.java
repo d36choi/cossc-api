@@ -1,33 +1,39 @@
 package com.api.cossc.controller;
 
-import com.api.cossc.domain.HistoryEntity;
-import com.api.cossc.domain.QuizEntity;
-import com.api.cossc.dto.DailyQuizRequest;
-import com.api.cossc.dto.DailyQuizResponse;
-import com.api.cossc.dto.QuizResponse;
-import com.api.cossc.repository.HistoryRepository;
-import com.api.cossc.repository.QuizRepository;
+import com.api.cossc.dto.quiz.*;
 import com.api.cossc.service.QuizService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import javax.validation.Valid;
 
+@Validated
 @RequiredArgsConstructor
-@RequestMapping("quiz")
 @RestController
 public class QuizController {
 
     private final QuizService quizService;
 
 
-    @GetMapping("/daily")
+    @GetMapping("/quiz/daily")
     public DailyQuizResponse getDailyQuiz(DailyQuizRequest dailyQuizRequest) {
 
         return quizService.getDailyQuiz(dailyQuizRequest);
+    }
+    @PostMapping("/quiz/create")
+    public QuizCreationResponse create(@RequestBody QuizCreationRequest quizCreationRequest) {
+
+        return quizService.create(quizCreationRequest);
+    }
+    @PatchMapping("/quiz/update")
+    public QuizCreationResponse update(@RequestBody QuizCreationRequest quizCreationRequest) {
+
+        return quizService.create(quizCreationRequest);
+    }
+    @DeleteMapping("/quiz/delete")
+    public QuizDeletionResponse delete(@Valid QuizDeletionRequest quizDeletionRequest) {
+
+        return quizService.delete(quizDeletionRequest);
     }
 }

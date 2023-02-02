@@ -1,6 +1,5 @@
-package com.api.cossc.dto;
+package com.api.cossc.dto.quiz;
 
-import com.api.cossc.domain.MultipleChoiceQuizEntity;
 import com.api.cossc.domain.OXChoiceQuestionEntity;
 import com.api.cossc.domain.QuizEntity;
 

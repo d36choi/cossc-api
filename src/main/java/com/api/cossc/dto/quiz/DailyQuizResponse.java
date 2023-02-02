@@ -1,8 +1,7 @@
-package com.api.cossc.dto;
+package com.api.cossc.dto.quiz;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 

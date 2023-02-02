@@ -1,5 +1,7 @@
 package com.api.cossc.security;
 
+import static com.api.cossc.dto.oauth.UserRole.USER;
+
 import com.api.cossc.domain.UserEntity;
 import java.util.Collection;
 import java.util.Collections;
@@ -11,18 +13,16 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
-import static com.api.cossc.dto.oauth.UserRole.*;
-
 @Getter
 public class CustomUserDetails implements UserDetails, OAuth2User {
   private final Long id;
-  private final String email;
+  private final String authKey;
   private final Collection<? extends GrantedAuthority> authorities;
   private Map<String, Object> attributes;
 
-  public CustomUserDetails(Long id, String email, Collection<? extends GrantedAuthority> authorities) {
+  public CustomUserDetails(Long id, String authKey, Collection<? extends GrantedAuthority> authorities) {
     this.id = id;
-    this.email = email;
+    this.authKey = authKey;
     this.authorities = authorities;
   }
 
@@ -32,7 +32,7 @@ public class CustomUserDetails implements UserDetails, OAuth2User {
 
     return new CustomUserDetails(
         userEntity.getId(),
-        userEntity.getEmail(),
+        userEntity.getOauthKey(),
         authorities
     );
   }
@@ -51,7 +51,7 @@ public class CustomUserDetails implements UserDetails, OAuth2User {
 
   @Override
   public String getUsername() {
-    return email;
+    return authKey;
   }
 
   @Override
