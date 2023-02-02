@@ -22,12 +22,12 @@ public class QuizController {
         return quizService.getDailyQuiz(dailyQuizRequest);
     }
     @PostMapping("/quiz/create")
-    public QuizCreationResponse create(QuizCreationRequest quizCreationRequest) {
+    public QuizCreationResponse create(@RequestBody QuizCreationRequest quizCreationRequest) {
 
         return quizService.create(quizCreationRequest);
     }
     @PatchMapping("/quiz/update")
-    public QuizCreationResponse update(QuizCreationRequest quizCreationRequest) {
+    public QuizCreationResponse update(@RequestBody QuizCreationRequest quizCreationRequest) {
 
         return quizService.create(quizCreationRequest);
     }

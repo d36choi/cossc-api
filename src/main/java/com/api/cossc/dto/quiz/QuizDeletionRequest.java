@@ -3,13 +3,13 @@ package com.api.cossc.dto.quiz;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @NoArgsConstructor
 public class QuizDeletionRequest {
 
-    @NotEmpty
+    @NotNull
     private Long id;
 
     private QuizDeletionRequest(Long id) {
