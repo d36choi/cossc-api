@@ -23,7 +23,12 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Override
     public AnswerCreationResponse create(AnswerCreationRequest answerCreationRequest) {
-        return null;
+
+        AnswerMapper instance = AnswerMapper.INSTANCE;
+        AnswerEntity entity = instance.toAnswerEntity(answerCreationRequest);
+        AnswerEntity saved = answerRepository.save(entity);
+
+        return AnswerCreationResponse.of(saved);
     }
 
     @Override

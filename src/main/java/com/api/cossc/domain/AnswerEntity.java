@@ -1,16 +1,17 @@
 package com.api.cossc.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
+
+/**
+ * 답변 기록 (history에서 분리)
+ */
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "ANSWER")
 public class AnswerEntity extends BaseTimeEntity {
@@ -28,4 +29,12 @@ public class AnswerEntity extends BaseTimeEntity {
 
   @Column(name = "updated_by", nullable = false)
   private String updatedBy;
+
+
+  @Builder
+  private AnswerEntity(String text, String createdBy, String updatedBy) {
+    this.text = text;
+    this.createdBy = createdBy;
+    this.updatedBy = updatedBy;
+  }
 }
