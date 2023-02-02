@@ -1,10 +1,11 @@
 package com.api.cossc.domain;
 
-import java.util.List;
-import javax.persistence.*;
-
+import com.api.cossc.dto.quiz.QuizCreationRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.util.List;
 
 
 @Getter
@@ -38,11 +39,11 @@ public class QuizEntity extends BaseTimeEntity {
   @OneToMany(mappedBy = "quizEntity")
   List<UserQuizEntity> userQuizEntitySet;
 
-  @OneToOne
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
   @JoinColumn(name = "multiple_choice_question_id")
   private MultipleChoiceQuizEntity multipleChoiceQuizEntity;
 
-  @OneToOne
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
   @JoinColumn(name = "ox_choice_question_id")
   private OXChoiceQuestionEntity oxChoiceQuestionEntity;
 
@@ -52,4 +53,20 @@ public class QuizEntity extends BaseTimeEntity {
   @ManyToOne(targetEntity = TagEntity.class, fetch = FetchType.LAZY)
   @JoinColumn(name = "tag_id")
   private TagEntity tagEntity;
+
+
+  public static QuizEntity emptyOf() {
+    return new QuizEntity();
+  }
+
+  public QuizEntity of(QuizCreationRequest quizCreationRequest, TagEntity tagEntity) {
+    this.id = quizCreationRequest.getId();
+    this.title = quizCreationRequest.getTitle();
+    this.description = quizCreationRequest.getDescription();
+    this.type = quizCreationRequest.getType();
+    this.createdBy = quizCreationRequest.getCreatedBy();
+    this.updatedBy = quizCreationRequest.getUpdatedBy();
+    this.tagEntity = tagEntity;
+    return this;
+  }
 }

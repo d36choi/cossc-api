@@ -1,21 +1,21 @@
 -- cossc.TAG definition
-DROP TABLE IF EXISTS `HISTORY`;
-DROP TABLE IF EXISTS `ANSWER`;
-DROP TABLE IF EXISTS `USER_QUIZ`;
-DROP TABLE IF EXISTS `QUIZ_TAG`;
-ALTER TABLE `USER`
-    DROP CONSTRAINT `USER_FK`;
-DROP TABLE IF EXISTS `TAG`;
-ALTER TABLE `QUIZ`
-    DROP CONSTRAINT `QUIZ_FK`;
-ALTER TABLE `QUIZ`
-    DROP CONSTRAINT `QUIZ_FK_2`;
-ALTER TABLE `QUIZ`
-    DROP CONSTRAINT `QUIZ_FK_3`;
-DROP TABLE IF EXISTS `OX_CHOICE_QUESTION`;
-DROP TABLE IF EXISTS `MULTIPLE_CHOICE_QUESTION`;
-DROP TABLE IF EXISTS `QUIZ`;
-DROP TABLE IF EXISTS `USER`;
+# DROP TABLE IF EXISTS `HISTORY`;
+# DROP TABLE IF EXISTS `ANSWER`;
+# DROP TABLE IF EXISTS `USER_QUIZ`;
+# DROP TABLE IF EXISTS `QUIZ_TAG`;
+# ALTER TABLE `USER`
+#     DROP CONSTRAINT `USER_FK`;
+# DROP TABLE IF EXISTS `TAG`;
+# ALTER TABLE `QUIZ`
+#     DROP CONSTRAINT `QUIZ_FK`;
+# ALTER TABLE `QUIZ`
+#     DROP CONSTRAINT `QUIZ_FK_2`;
+# ALTER TABLE `QUIZ`
+#     DROP CONSTRAINT `QUIZ_FK_3`;
+# DROP TABLE IF EXISTS `OX_CHOICE_QUESTION`;
+# DROP TABLE IF EXISTS `MULTIPLE_CHOICE_QUESTION`;
+# DROP TABLE IF EXISTS `QUIZ`;
+# DROP TABLE IF EXISTS `USER`;
 
 CREATE TABLE `TAG`
 (
@@ -36,7 +36,7 @@ CREATE TABLE `USER`
     `user_id`       bigint       NOT NULL AUTO_INCREMENT,
     `auth_provider` varchar(255) DEFAULT NULL,
     `description`   varchar(255) DEFAULT NULL,
-    `email`         varchar(255) NOT NULL,
+    `email`         varchar(255),
     `img`           varchar(255) DEFAULT NULL,
     `name`          varchar(255) DEFAULT NULL,
     `refresh_token` varchar(255) DEFAULT NULL,
@@ -47,9 +47,13 @@ CREATE TABLE `USER`
     `created_by`    varchar(255) NOT NULL,
     `updated_date`  datetime     NOT NULL,
     `updated_by`    varchar(255) NOT NULL,
+    oauth_key     varchar(255) null,
+
     PRIMARY KEY (`user_id`),
     UNIQUE KEY `UK_ob8kqyqqgmefl0aco34akdtpe` (`email`),
     UNIQUE KEY `UK_gj2fy3dcix7ph7k8684gka40c` (`name`),
+    constraint UK_le009li2wgwlqhx6etim1k8nx
+        unique (`oauth_key`),
     constraint USER_FK
         foreign key (tag_id) references cossc.TAG (tag_id)
 ) ENGINE = InnoDB
@@ -64,7 +68,6 @@ create table cossc.QUIZ
         primary key,
     title                       varchar(100) not null,
     description                 text         not null,
-    user_id                     bigint       not null,
     type                        varchar(100) not null,
     created_date                datetime     not null,
     created_by                  varchar(255) not null,
@@ -72,10 +75,11 @@ create table cossc.QUIZ
     updated_by                  varchar(255) not null,
     multiple_choice_question_id bigint       null,
     ox_choice_question_id       bigint       null,
-    constraint QUIZ_FK
-        foreign key (user_id) references cossc.USER (user_id)
-)
-    charset = utf8mb4;
+    `tag_id`       bigint       NOT NULL,
+    constraint QUIZ_FK_TAG
+        foreign key (`tag_id`) references cossc.TAG (`tag_id`)
+
+) charset = utf8mb4;
 
 
 
