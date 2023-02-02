@@ -28,19 +28,23 @@ dependencies {
     testImplementation 'org.projectlombok:lombok:1.18.22'
 
     compileOnly 'org.projectlombok:lombok'
-//	compile 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
 
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	implementation 'mysql:mysql-connector-java'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	annotationProcessor 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testImplementation "org.testcontainers:mysql:1.17.6"
 	testImplementation "org.testcontainers:junit-jupiter:1.17.6"
 	testImplementation "org.testcontainers:testcontainers:1.17.6"
 	implementation "org.testcontainers:jdbc:1.17.6"
+
+	implementation 'org.mapstruct:mapstruct:1.4.2.Final'
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
 
 
 }
@@ -52,3 +56,4 @@ tasks.named('test') {
 		showStandardStreams true
 	}
 }
+
