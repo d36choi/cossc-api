@@ -41,7 +41,7 @@ public class QuizEntity extends BaseTimeEntity {
 
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
   @JoinColumn(name = "multiple_choice_question_id")
-  private MultipleChoiceQuizEntity multipleChoiceQuizEntity;
+  private MultipleChoiceQuestionEntity multipleChoiceQuestionEntity;
 
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
   @JoinColumn(name = "ox_choice_question_id")

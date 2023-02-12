@@ -10,7 +10,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "OX_CHOICE_QUESTION")
-public class OXChoiceQuestionEntity {
+public class OXChoiceQuestionEntity extends ChoiceQuestionEntity {
 
 
     @Id

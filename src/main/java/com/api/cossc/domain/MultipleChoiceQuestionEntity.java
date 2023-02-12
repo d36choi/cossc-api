@@ -1,17 +1,17 @@
 package com.api.cossc.domain;
 
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor
 @Entity
 @Table(name = "MULTIPLE_CHOICE_QUESTION")
-public class MultipleChoiceQuizEntity {
+public class MultipleChoiceQuestionEntity extends ChoiceQuestionEntity {
 
 
     @Id
@@ -31,4 +31,12 @@ public class MultipleChoiceQuizEntity {
     @Column(name = "answer_choice")
     private int correctChoice;
 
+    @Builder
+    private MultipleChoiceQuestionEntity(String choice1, String choice2, String choice3, String choice4, int correctChoice) {
+        this.choice1 = choice1;
+        this.choice2 = choice2;
+        this.choice3 = choice3;
+        this.choice4 = choice4;
+        this.correctChoice = correctChoice;
+    }
 }
