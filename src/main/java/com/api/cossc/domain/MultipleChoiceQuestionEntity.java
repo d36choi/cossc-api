@@ -1,6 +1,7 @@
 package com.api.cossc.domain;
 
 
+import com.api.cossc.service.choice.ChoiceQuestionService;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,5 +39,10 @@ public class MultipleChoiceQuestionEntity extends ChoiceQuestionEntity {
         this.choice3 = choice3;
         this.choice4 = choice4;
         this.correctChoice = correctChoice;
+    }
+
+    @Override
+    public void add(ChoiceQuestionService choiceQuestionService) {
+        choiceQuestionService.save(this);
     }
 }
