@@ -1,6 +1,8 @@
 package com.api.cossc.domain;
 
 
+import com.api.cossc.service.choice.ChoiceQuestionService;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,5 +23,14 @@ public class OXChoiceQuestionEntity extends ChoiceQuestionEntity {
     @Column(name = "answer_choice")
     private Boolean answerChoice;
 
+    @Builder
+    private OXChoiceQuestionEntity(Boolean answerChoice) {
+        this.answerChoice = answerChoice;
+    }
+
+    @Override
+    public void add(ChoiceQuestionService choiceQuestionService) {
+        choiceQuestionService.save(this);
+    }
 }
 
