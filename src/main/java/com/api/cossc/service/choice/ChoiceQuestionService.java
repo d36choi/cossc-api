@@ -7,7 +7,7 @@ import com.api.cossc.dto.choice.ChoiceQuestionCreationResponse;
 
 public interface ChoiceQuestionService {
 
-    ChoiceQuestionCreationResponse create(ChoiceQuestionCreationRequest choiceQuestionCreationRequest);
+    ChoiceQuestionCreationResponse create(ChoiceQuestionCreationRequest choiceQuestionCreationRequest) throws Exception;
 
     void save(MultipleChoiceQuestionEntity multipleChoiceQuestionEntity);
     void save(OXChoiceQuestionEntity oxChoiceQuestionEntity);

@@ -9,4 +9,7 @@ public abstract class ChoiceQuestionEntity {
 
 
     public abstract void add(ChoiceQuestionService choiceQuestionService);
+    public abstract void assign(QuizEntity quizEntity);
+
+    public abstract Long getId();
 }

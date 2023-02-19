@@ -23,7 +23,7 @@ public class ChoiceQuestionFactory {
         } else if (QuizType.OX.equals(choiceQuestionCreationRequest.getQuizType())) {
             choiceQuestionEntity = OXChoiceMapper.INSTANCE.toEntity((OXChoiceQuestionCreationRequest) choiceQuestionCreationRequest);
         } else {
-            throw new Exception("why");
+            throw new Exception("없는 퀴즈 유형입니다.");
         }
 
         return choiceQuestionEntity;
