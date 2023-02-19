@@ -69,4 +69,11 @@ public class QuizEntity extends BaseTimeEntity {
     this.tagEntity = tagEntity;
     return this;
   }
+
+  public void assignChoice(OXChoiceQuestionEntity oxChoiceQuestionEntity) {
+    this.oxChoiceQuestionEntity = oxChoiceQuestionEntity;
+  }
+  public void assignChoice(MultipleChoiceQuestionEntity multipleChoiceQuestionEntity) {
+    this.multipleChoiceQuestionEntity = multipleChoiceQuestionEntity;
+  }
 }

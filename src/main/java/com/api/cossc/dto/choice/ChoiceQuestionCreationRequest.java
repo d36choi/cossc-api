@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public abstract class ChoiceQuestionCreationRequest {
+public class ChoiceQuestionCreationRequest {
 
     private Long quizId;
     private QuizType quizType;

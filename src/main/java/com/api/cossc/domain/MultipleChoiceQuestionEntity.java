@@ -45,4 +45,9 @@ public class MultipleChoiceQuestionEntity extends ChoiceQuestionEntity {
     public void add(ChoiceQuestionService choiceQuestionService) {
         choiceQuestionService.save(this);
     }
+
+    @Override
+    public void assign(QuizEntity quizEntity) {
+        quizEntity.assignChoice(this);
+    }
 }
