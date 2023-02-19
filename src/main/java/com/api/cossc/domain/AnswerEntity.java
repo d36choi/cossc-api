@@ -37,4 +37,12 @@ public class AnswerEntity extends BaseTimeEntity {
     this.createdBy = createdBy;
     this.updatedBy = updatedBy;
   }
+
+  private AnswerEntity(Long id) {
+    this.id = id;
+  }
+
+  public static AnswerEntity of(Long id) {
+    return new AnswerEntity(id);
+  }
 }
