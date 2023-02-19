@@ -20,6 +20,7 @@ public class AnswerController {
         return answerService.getAnswer(answerRequest);
     }
 
+    @Secured("ROLE_ADMIN")
     @PostMapping("/answer/create")
     public AnswerCreationResponse create(final AnswerCreationRequest answerCreationRequest) {
 

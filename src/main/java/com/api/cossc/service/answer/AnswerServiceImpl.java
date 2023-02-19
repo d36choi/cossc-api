@@ -33,6 +33,8 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Override
     public AnswerDeletionResponse delete(AnswerDeletionRequest answerDeletionRequest) {
-        return null;
+
+        answerRepository.delete(AnswerEntity.of(answerDeletionRequest.getId()));
+        return new AnswerDeletionResponse(answerDeletionRequest.getId());
     }
 }

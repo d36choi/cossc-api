@@ -4,6 +4,8 @@ import com.api.cossc.ContainerInitialization;
 import com.api.cossc.domain.AnswerEntity;
 import com.api.cossc.dto.answer.AnswerCreationRequest;
 import com.api.cossc.dto.answer.AnswerCreationResponse;
+import com.api.cossc.dto.answer.AnswerDeletionRequest;
+import com.api.cossc.dto.answer.AnswerDeletionResponse;
 import com.api.cossc.repository.answer.AnswerRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -58,6 +60,19 @@ class AnswerServiceTest extends ContainerInitialization {
         AnswerEntity answerEntity = answerRepository.findById(answerCreationResponse.getId()).orElseThrow(Exception::new);
 
         assertThat(answerEntity.getText()).isEqualTo("test");
+    }
+
+    @DisplayName("answer를 제거할 수 있다")
+    @Test
+    public void should_delete_answer() throws Exception {
+
+        AnswerCreationResponse answerCreationResponse = answerService.create(new AnswerCreationRequest("test", "test", "test"));
+
+        AnswerDeletionResponse delete = answerService.delete(new AnswerDeletionRequest(answerCreationResponse.getId()));
+
+        AnswerEntity answerEntity = answerRepository.findById(answerCreationResponse.getId()).orElse(null);
+
+        assertThat(answerEntity).isNull();
     }
 
 
