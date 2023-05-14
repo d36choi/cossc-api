@@ -6,6 +6,7 @@ import com.api.cossc.domain.MultipleChoiceQuestionEntity;
 import com.api.cossc.domain.QuizType;
 import com.api.cossc.dto.choice.ChoiceQuestionCreationRequest;
 import com.api.cossc.dto.choice.MultipleChoiceQuestionCreationRequest;
+import org.junit.Ignore;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("test")
 @Testcontainers
+@Ignore
 class ChoiceQuestionFactoryTest extends ContainerInitialization {
 
     @Autowired

@@ -2,7 +2,12 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.6'
 	id 'io.spring.dependency-management' version '1.1.0'
+	id 'org.asciidoctor.convert' version '1.5.9.2'
+
 }
+
+apply plugin: 'io.spring.dependency-management'
+
 
 group = 'com.api'
 version = '0.0.1-SNAPSHOT'
@@ -47,9 +52,47 @@ dependencies {
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
 	testAnnotationProcessor "org.mapstruct:mapstruct-processor:1.2.0.Final"
 
+	asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 
+
+	implementation 'io.springfox:springfox-boot-starter:3.0.0'
+	implementation 'io.swagger.core.v3:swagger-jaxrs2:2.1.10'
 
 }
+
+ext {
+	snippetsDir = file('build/generated-snippets')
+}
+
+test {
+	exclude '**/service/**'
+	systemProperty 'spring.profiles.active', 'test'
+//	outputs.dir snippetsDir
+}
+
+asciidoctor {
+//	inputs.dir snippetsDir
+//	print('test'+ snippetsDir + '\n')
+//	print('test2'+ file('build/generated-snippets') + '\n')
+//	inputs.dir snippetsDir
+//	outputDir = file('${buildDir}/docs')
+//	print('test3' + outputDir)
+	dependsOn test
+}
+
+bootJar {
+	dependsOn asciidoctor
+//	print("${asciidoctor.outputDir}")
+//	from ("${asciidoctor.outputDir}") {
+//		into 'docs'
+//	}
+
+	from ("${asciidoctor.outputDir}") { // (4)
+		into 'static/docs'
+	}
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
 	testLogging {

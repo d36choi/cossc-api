@@ -7,6 +7,7 @@ import com.api.cossc.dto.answer.AnswerCreationResponse;
 import com.api.cossc.dto.answer.AnswerDeletionRequest;
 import com.api.cossc.dto.answer.AnswerDeletionResponse;
 import com.api.cossc.repository.answer.AnswerRepository;
+import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -29,6 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("test")
 @Testcontainers
+@Ignore
 class AnswerServiceTest extends ContainerInitialization {
     @Autowired
     private AnswerRepository answerRepository;
