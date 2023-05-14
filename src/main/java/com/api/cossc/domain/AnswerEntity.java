@@ -30,6 +30,10 @@ public class AnswerEntity extends BaseTimeEntity {
   @Column(name = "updated_by", nullable = false)
   private String updatedBy;
 
+  @ManyToOne(targetEntity = UserEntity.class, fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id")
+  private UserEntity userEntity;
+
 
   @Builder
   private AnswerEntity(String text, String createdBy, String updatedBy) {

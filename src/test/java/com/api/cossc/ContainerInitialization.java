@@ -11,7 +11,9 @@ public abstract class ContainerInitialization {
     public static MySQLContainer<?> mysql = new MySQLContainer<>("mysql:latest")
             .withDatabaseName("cossc")
             .withUsername("root")
-            .withPassword("root");
+            .withPassword("root")
+//            .withReuse(true)
+            ;
 
     @DynamicPropertySource
     public static void properties(DynamicPropertyRegistry registry) {

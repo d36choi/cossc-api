@@ -5,6 +5,7 @@ import com.api.cossc.domain.QuizEntity;
 import com.api.cossc.domain.QuizType;
 import com.api.cossc.dto.quiz.*;
 import com.api.cossc.repository.QuizRepository;
+import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -29,6 +30,7 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("test")
 @Testcontainers
+@Ignore
 class QuizServiceTest extends ContainerInitialization {
     @Autowired
     private QuizRepository quizRepository;

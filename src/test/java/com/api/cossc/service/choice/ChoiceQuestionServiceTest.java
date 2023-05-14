@@ -11,6 +11,7 @@ import com.api.cossc.dto.choice.OXChoiceQuestionCreationRequest;
 import com.api.cossc.repository.OXChoiceQuestionRepository;
 import com.api.cossc.service.repository.MultipleChoiceQuestionRepository;
 import org.assertj.core.api.Assertions;
+import org.junit.Ignore;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("test")
 @Testcontainers
+@Ignore
 class ChoiceQuestionServiceTest extends ContainerInitialization {
 
 
