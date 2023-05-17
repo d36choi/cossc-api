@@ -7,5 +7,5 @@ import org.springframework.security.core.userdetails.UserDetails;
 public interface UserService {
 
 
-    UserMainResponse getUserMe(UserDetails userDetails);
+    UserMainResponse getUserMe(UserDetails userDetails) throws Exception;
 }
