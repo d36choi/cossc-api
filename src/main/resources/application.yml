@@ -28,6 +28,12 @@ spring:
 server:
   port: 8080
 
+logging:
+  level:
+    org:
+      springframework:
+        web:
+          filter: debug
 ---
 spring:
   config:
@@ -57,6 +63,13 @@ spring:
       mode: embedded
       schema-locations: classpath*:db/cossc/schema.sql
       data-locations: classpath*:db/cossc/data.sql
+
+logging:
+  level:
+    org:
+      springframework:
+        web:
+          filter: debug
 ---
 spring:
   config:
