@@ -2,6 +2,7 @@ package com.api.cossc.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Comment;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -26,9 +27,11 @@ public class DailyQuizEntity {
     @JoinColumn(name = "quiz_id")
     private QuizEntity quizEntity;
 
+    @Comment("문제 풀이 여부")
     @Column(name = "solved")
     private boolean solved;
 
+    @Comment("문제 정답 여부")
     @Column(name = "correct")
     private boolean correct;
 }
