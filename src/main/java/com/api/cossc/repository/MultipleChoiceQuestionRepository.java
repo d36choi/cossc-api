@@ -1,4 +1,4 @@
-package com.api.cossc.service.repository;
+package com.api.cossc.repository;
 
 import com.api.cossc.domain.MultipleChoiceQuestionEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
