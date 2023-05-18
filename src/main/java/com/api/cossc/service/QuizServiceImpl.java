@@ -4,10 +4,12 @@ import com.api.cossc.domain.HistoryEntity;
 import com.api.cossc.domain.QuizEntity;
 import com.api.cossc.domain.TagEntity;
 import com.api.cossc.dto.quiz.*;
+import com.api.cossc.exception.CommonException;
 import com.api.cossc.repository.HistoryRepository;
 import com.api.cossc.repository.QuizRepository;
 import com.api.cossc.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,7 +47,7 @@ public class QuizServiceImpl implements QuizService {
                 .toList());
 
         if (quizResponses.size() < 3) {
-            throw new RuntimeException("퀴즈가 부족합니다");
+            throw new CommonException(HttpStatus.INTERNAL_SERVER_ERROR, "퀴즈가 부족합니다");
         }
 
         Collections.shuffle(quizResponses);
