@@ -1,17 +1,19 @@
 package com.api.cossc.service;
 
+import com.api.cossc.dto.oauth.RefreshTokenInfo;
+import com.api.cossc.exception.CommonException;
 import com.api.cossc.repository.UserRepository;
 import com.api.cossc.security.CustomUserDetails;
 import com.api.cossc.security.JwtTokenProvider;
-import com.api.cossc.util.CookieUtil;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Log4j2
 @Service
@@ -24,17 +26,15 @@ public class AuthService {
   private final UserRepository userRepository;
   private final JwtTokenProvider tokenProvider;
 
-  public String refreshToken(HttpServletRequest request, HttpServletResponse response, String oldAccessToken) {
+  public String refreshToken(HttpServletRequest request, HttpServletResponse response, RefreshTokenInfo refreshTokenInfo) {
     // 1. Validation Refresh Token
-    String oldRefreshToken = CookieUtil.getCookie(request, cookieKey)
-        .map(Cookie::getValue).orElseThrow(() -> new RuntimeException("no Refresh Token Cookie"));
 
-    if (!tokenProvider.validateToken(oldRefreshToken)) {
-      throw new RuntimeException("Not Validated Refresh Token");
+    if (!tokenProvider.validateToken(refreshTokenInfo.refreshToken())) {
+      throw new CommonException(HttpStatus.BAD_REQUEST, "Not Validated Refresh Token");
     }
 
     // 2. 유저정보 얻기
-    Authentication authentication = tokenProvider.getAuthentication(oldAccessToken);
+    Authentication authentication = tokenProvider.getAuthentication(refreshTokenInfo.accessToken());
     CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
 
     Long id = Long.valueOf(user.getName());
@@ -42,8 +42,8 @@ public class AuthService {
     // 3. Match Refresh Token
     String savedToken = userRepository.getRefreshTokenById(id);
 
-    if (!savedToken.equals(oldRefreshToken)) {
-      throw new RuntimeException("Not Matched Refresh Token");
+    if (!savedToken.equals(refreshTokenInfo.refreshToken())) {
+      throw new CommonException(HttpStatus.BAD_REQUEST, "Not Matched Refresh Token");
     }
 
     // 4. JWT 갱신

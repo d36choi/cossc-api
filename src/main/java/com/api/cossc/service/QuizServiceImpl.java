@@ -32,6 +32,9 @@ public class QuizServiceImpl implements QuizService {
     @Override
     public DailyQuizResponse getDailyQuiz(DailyQuizRequest dailyQuizRequest) {
 
+        //TODO:: 오늘 날짜에 해당 유저의 문제가 존재한다면 그대로 전달
+        // 없으면 태그 기준 퀴즈를 만들어서 전달
+
         List<QuizEntity> quizEntities = quizRepository.findAllByTagEntity_Id(dailyQuizRequest.getTagId());
 
         List<HistoryEntity> historyEntities = historyRepository.findAllByUserEntity_Id(dailyQuizRequest.getUserId());
