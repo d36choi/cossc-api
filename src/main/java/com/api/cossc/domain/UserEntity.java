@@ -5,6 +5,7 @@ import com.api.cossc.dto.oauth.UserRole;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.List;
@@ -56,6 +57,14 @@ public class UserEntity extends BaseTimeEntity {
 
   @Column(name = "updated_by", nullable = false)
   private String updatedBy;
+
+  @Column(name = "correct_count", nullable = false)
+  @ColumnDefault("0")
+  private int correctCount;
+
+  @Column(name = "solved_count", nullable = false)
+  @ColumnDefault("0")
+  private int solvedCount;
 
   @OneToMany(mappedBy = "userEntity")
   Set<UserQuizEntity> userQuizEntitySet;
