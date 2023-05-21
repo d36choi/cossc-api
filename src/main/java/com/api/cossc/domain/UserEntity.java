@@ -79,7 +79,7 @@ public class UserEntity extends BaseTimeEntity {
 
   @Builder
   public UserEntity(String email, String name, String oauthKey, String img, String level, UserRole role,
-                    AuthProvider authProvider, String createdBy, String updatedBy) {
+                    AuthProvider authProvider, String createdBy, String updatedBy, int correctCount, int solvedCount) {
     this.email = email;
     this.name = name;
     this.oauthKey = oauthKey;
@@ -89,5 +89,7 @@ public class UserEntity extends BaseTimeEntity {
     this.authProvider = authProvider;
     this.createdBy = createdBy;
     this.updatedBy = updatedBy;
+    this.correctCount = correctCount;
+    this.solvedCount = solvedCount;
   }
 }
