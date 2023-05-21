@@ -29,9 +29,7 @@ public class UserServiceImpl implements UserService {
         if (Objects.isNull(userEntity.getTagEntity()))
             throw new CommonException(HttpStatus.INTERNAL_SERVER_ERROR, "USER의 TAG가 없습니다.");
 
-
-
-        return new UserMainResponse(userEntity.getName(), 0, 0, userEntity.getImg(), userEntity.getTagEntity().getName());
+        return new UserMainResponse(userEntity.getName(), userEntity.getSolvedCount(), userEntity.getCorrectCount(), userEntity.getImg(), userEntity.getTagEntity().getName());
     }
 }
 
