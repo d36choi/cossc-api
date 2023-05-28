@@ -5,6 +5,7 @@ import com.api.cossc.exception.CommonException;
 import com.api.cossc.repository.UserRepository;
 import com.api.cossc.security.CustomUserDetails;
 import com.api.cossc.security.JwtTokenProvider;
+import com.nimbusds.oauth2.sdk.token.RefreshToken;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,7 +27,7 @@ public class AuthService {
   private final UserRepository userRepository;
   private final JwtTokenProvider tokenProvider;
 
-  public String refreshToken(HttpServletRequest request, HttpServletResponse response, RefreshTokenInfo refreshTokenInfo) {
+  public RefreshTokenInfo refreshToken(HttpServletRequest request, HttpServletResponse response, RefreshTokenInfo refreshTokenInfo) {
     // 1. Validation Refresh Token
 
     if (!tokenProvider.validateToken(refreshTokenInfo.refreshToken())) {
@@ -48,8 +49,8 @@ public class AuthService {
 
     // 4. JWT 갱신
     String accessToken = tokenProvider.createAccessToken(authentication);
-//    tokenProvider.createRefreshToken(authentication, response);
+    String refreshToken = tokenProvider.createRefreshToken(authentication, response);
 
-    return accessToken;
+    return new RefreshTokenInfo(refreshToken, accessToken);
   }
 }
