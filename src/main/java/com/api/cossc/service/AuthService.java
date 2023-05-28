@@ -5,7 +5,6 @@ import com.api.cossc.exception.CommonException;
 import com.api.cossc.repository.UserRepository;
 import com.api.cossc.security.CustomUserDetails;
 import com.api.cossc.security.JwtTokenProvider;
-import com.nimbusds.oauth2.sdk.token.RefreshToken;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
