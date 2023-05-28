@@ -48,7 +48,7 @@ public class AuthService {
 
     // 4. JWT 갱신
     String accessToken = tokenProvider.createAccessToken(authentication);
-    tokenProvider.createRefreshToken(authentication, response);
+//    tokenProvider.createRefreshToken(authentication, response);
 
     return accessToken;
   }
