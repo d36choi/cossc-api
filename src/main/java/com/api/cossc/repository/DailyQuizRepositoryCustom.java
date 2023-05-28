@@ -1,6 +1,8 @@
 package com.api.cossc.repository;
 
+import java.util.List;
+
 public interface DailyQuizRepositoryCustom {
 
-//    UserMainResponse searchUserMain();
+    List<Long> getAllQuizIdByUser(Long uid);
 }

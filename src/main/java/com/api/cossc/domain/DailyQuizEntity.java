@@ -5,24 +5,22 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @Getter
 @NoArgsConstructor
-@IdClass(DailyQuizId.class)
 @Entity
 @Table(name = "DAILY_QUIZ")
 public class DailyQuizEntity {
 
-    @Id
-    private LocalDate givenDate;
+    @EmbeddedId
+    private DailyQuizId dailyQuizId;
 
-    @Id
+//    @Id
     @ManyToOne(targetEntity = UserEntity.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;
 
-    @Id
+//    @Id
     @ManyToOne(targetEntity = QuizEntity.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "quiz_id")
     private QuizEntity quizEntity;

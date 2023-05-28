@@ -1,23 +1,19 @@
 package com.api.cossc.service;
 
-import com.api.cossc.domain.HistoryEntity;
+import com.api.cossc.domain.DailyQuizEntity;
 import com.api.cossc.domain.QuizEntity;
 import com.api.cossc.domain.TagEntity;
 import com.api.cossc.dto.quiz.*;
 import com.api.cossc.exception.CommonException;
-import com.api.cossc.repository.HistoryRepository;
-import com.api.cossc.repository.QuizRepository;
-import com.api.cossc.repository.TagRepository;
+import com.api.cossc.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -27,36 +23,44 @@ public class QuizServiceImpl implements QuizService {
     private final HistoryRepository historyRepository;
     private final TagRepository tagRepository;
 
+    private final DailyQuizRepository dailyQuizRepository;
+
+    private final UserRepository userRepository;
+
 
     @Transactional(readOnly = true)
     @Override
     public DailyQuizResponse getDailyQuiz(DailyQuizRequest dailyQuizRequest) {
 
-        //TODO:: 오늘 날짜에 해당 유저의 문제가 존재한다면 그대로 전달
-        // 없으면 태그 기준 퀴즈를 만들어서 전달
+//        UserEntity userEntity = userRepository.findById(dailyQuizRequest.getUserId())
+//                .orElseThrow(() -> new CommonException(HttpStatus.BAD_REQUEST, "유저가 없습니다."));
+
+        List<DailyQuizEntity> dailyQuizEntities = dailyQuizRepository.findAllByDailyQuizId_UserIdAndDailyQuizId_GivenDate(dailyQuizRequest.getUserId(), LocalDate.now());
+
+        if (!dailyQuizEntities.isEmpty())
+            return DailyQuizResponse.builder()
+                    .quizResponses(dailyQuizEntities.stream().map(q -> QuizResponse.of(q.getQuizEntity())).toList())
+                    .build();
 
         List<QuizEntity> quizEntities = quizRepository.findAllByTagEntity_Id(dailyQuizRequest.getTagId());
+        Collections.shuffle(quizEntities);
 
-        List<HistoryEntity> historyEntities = historyRepository.findAllByUserEntity_Id(dailyQuizRequest.getUserId());
+        List<Long> allQuizIdByUser = dailyQuizRepository.getAllQuizIdByUser(dailyQuizRequest.getUserId());
 
-        Set<Long> quizSetSolved = historyEntities.stream()
-                .filter(historyEntity -> !historyEntity.getSolved())
-                .map(historyEntity -> historyEntity.getQuizEntity().getId())
-                .collect(Collectors.toSet());
+        List<QuizEntity> dailyQuiz = quizEntities.stream()
+                .filter(quiz -> !allQuizIdByUser.contains(quiz.getId()))
+                .limit(3)
+                .toList();
 
-        List<QuizResponse> quizResponses = new ArrayList<>(quizEntities
-                .stream().filter(quiz -> !quizSetSolved.contains(quiz.getId()))
-                .map(QuizResponse::of)
-                .toList());
+        List<QuizResponse> quizResponses = dailyQuiz.stream().map(QuizResponse::of).toList();
 
         if (quizResponses.size() < 3) {
             throw new CommonException(HttpStatus.INTERNAL_SERVER_ERROR, "퀴즈가 부족합니다");
         }
 
-        Collections.shuffle(quizResponses);
 
         return DailyQuizResponse.builder()
-                .quizResponses(quizResponses.subList(0, 3))
+                .quizResponses(quizResponses)
                 .build();
     }
 
