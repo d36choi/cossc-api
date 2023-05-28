@@ -7,7 +7,6 @@ import com.api.cossc.dto.user.UserMainResponse;
 import com.api.cossc.exception.CommonException;
 import com.api.cossc.repository.TagRepository;
 import com.api.cossc.repository.UserRepository;
-import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
