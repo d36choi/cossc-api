@@ -5,6 +5,7 @@ import com.api.cossc.dto.oauth.UserRole;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.List;
@@ -57,6 +58,14 @@ public class UserEntity extends BaseTimeEntity {
   @Column(name = "updated_by", nullable = false)
   private String updatedBy;
 
+  @Column(name = "correct_count", nullable = false)
+  @ColumnDefault("0")
+  private int correctCount;
+
+  @Column(name = "solved_count", nullable = false)
+  @ColumnDefault("0")
+  private int solvedCount;
+
   @OneToMany(mappedBy = "userEntity")
   Set<UserQuizEntity> userQuizEntitySet;
 
@@ -67,10 +76,14 @@ public class UserEntity extends BaseTimeEntity {
   @JoinColumn(name = "tag_id")
   private TagEntity tagEntity;
 
+  public void addTagEntity(TagEntity tag) {
+    this.tagEntity = tag;
+  }
+
 
   @Builder
   public UserEntity(String email, String name, String oauthKey, String img, String level, UserRole role,
-                    AuthProvider authProvider, String createdBy, String updatedBy) {
+                    AuthProvider authProvider, String createdBy, String updatedBy, int correctCount, int solvedCount) {
     this.email = email;
     this.name = name;
     this.oauthKey = oauthKey;
@@ -80,5 +93,7 @@ public class UserEntity extends BaseTimeEntity {
     this.authProvider = authProvider;
     this.createdBy = createdBy;
     this.updatedBy = updatedBy;
+    this.correctCount = correctCount;
+    this.solvedCount = solvedCount;
   }
 }

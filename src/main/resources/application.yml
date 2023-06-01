@@ -9,12 +9,14 @@ spring:
       ddl-auto: update
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: root
     url: jdbc:mysql://localhost:3306/cossc?createDatabaseIfNotExist=true&characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 
 
   sql:
@@ -23,7 +25,15 @@ spring:
       schema-locations: classpath*:db/cossc/schema.sql
       data-locations: classpath*:db/cossc/data.sql
       platform: mysql
+server:
+  port: 8080
 
+logging:
+  level:
+    org:
+      springframework:
+        web:
+          filter: debug
 ---
 spring:
   config:
@@ -42,11 +52,24 @@ spring:
     username: root
     password: root
     url: jdbc:mysql://localhost:3306/cossc?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+
   sql:
     init:
       mode: embedded
       schema-locations: classpath*:db/cossc/schema.sql
       data-locations: classpath*:db/cossc/data.sql
+
+logging:
+  level:
+    org:
+      springframework:
+        web:
+          filter: debug
 ---
 spring:
   config:
@@ -61,6 +84,12 @@ spring:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+
   sql:
     init:
       mode: never
