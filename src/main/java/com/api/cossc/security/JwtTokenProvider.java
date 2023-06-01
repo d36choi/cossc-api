@@ -1,25 +1,21 @@
 package com.api.cossc.security;
 
 import com.api.cossc.repository.UserRepository;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.UnsupportedJwtException;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.Collection;
-import java.util.Date;
-import java.util.stream.Collectors;
-import javax.servlet.http.HttpServletResponse;
+import io.jsonwebtoken.*;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.Collection;
+import java.util.Date;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Component
@@ -65,7 +61,7 @@ public class JwtTokenProvider {
         .compact();
   }
 
-  public void createRefreshToken(Authentication authentication, HttpServletResponse response) {
+  public String createRefreshToken(Authentication authentication, HttpServletResponse response) {
     Date now = new Date();
     Date validity = new Date(now.getTime() + REFRESH_TOKEN_EXPIRE_LENGTH);
 
@@ -78,15 +74,15 @@ public class JwtTokenProvider {
 
     saveRefreshToken(authentication, refreshToken);
 
-    ResponseCookie cookie = ResponseCookie.from(COOKIE_REFRESH_TOKEN_KEY, refreshToken)
-        .httpOnly(true)
-        .secure(true)
-        .sameSite("Lax")
-        .maxAge(REFRESH_TOKEN_EXPIRE_LENGTH/1000)
-        .path("/")
-        .build();
+//    ResponseCookie cookie = ResponseCookie.from(COOKIE_REFRESH_TOKEN_KEY, refreshToken)
+//        .httpOnly(true)
+//        .secure(true)
+//        .sameSite("Lax")
+//        .maxAge(REFRESH_TOKEN_EXPIRE_LENGTH/1000)
+//        .path("/")
+//        .build();
 
-    response.addHeader("Set-Cookie", cookie.toString());
+    return refreshToken;
   }
 
   private void saveRefreshToken(Authentication authentication, String refreshToken) {

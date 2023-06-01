@@ -1,12 +1,7 @@
 package com.api.cossc.configuration;
 
 import com.api.cossc.repository.CookieAuthorizationRequestRepository;
-import com.api.cossc.security.JwtAccessDeniedHandler;
-import com.api.cossc.security.JwtAuthenticationEntryPoint;
-import com.api.cossc.security.JwtAuthenticationFilter;
-
-import com.api.cossc.security.OAuth2AuthenticationFailureHandler;
-import com.api.cossc.security.OAuth2AuthenticationSuccessHandler;
+import com.api.cossc.security.*;
 import com.api.cossc.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -17,15 +12,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
-import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
-import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
-import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -48,6 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   public void configure(WebSecurity web) throws Exception {
     web.ignoring().antMatchers("/h2-console/**", "/favicon.ico");
+    web.ignoring().antMatchers("swagger-ui/**", "swagger-ui**", "/v3/api-docs/**", "/v3/api-docs**");
   }
 
   @Override
