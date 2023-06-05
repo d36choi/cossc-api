@@ -100,7 +100,6 @@ ext {
 }
 
 test {
-	exclude '**/service/**'
 	systemProperty 'spring.profiles.active', 'test'
 //	outputs.dir snippetsDir
 }
