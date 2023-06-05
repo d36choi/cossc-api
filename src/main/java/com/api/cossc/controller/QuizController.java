@@ -4,7 +4,6 @@ import com.api.cossc.dto.quiz.*;
 import com.api.cossc.security.CustomUserDetails;
 import com.api.cossc.service.quiz.QuizService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +19,6 @@ public class QuizController {
 
 
     @GetMapping("/quiz/daily")
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public DailyQuizResponse getDailyQuiz(@AuthenticationPrincipal CustomUserDetails user) {
 
         return quizService.getDailyQuiz(user);
