@@ -1,7 +1,7 @@
 package com.api.cossc.controller;
 
 import com.api.cossc.dto.quiz.*;
-import com.api.cossc.service.QuizService;
+import com.api.cossc.service.quiz.QuizService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

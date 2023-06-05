@@ -17,10 +17,10 @@ import java.time.LocalDate;
 @Builder
 public class DailyQuizId implements Serializable {
 
-    @Column(name = "GIVEN_DATE")
+    @Column(name = "given_date")
     private LocalDate givenDate;
-    @Column(name = "USER_ID")
+    @Column(name = "user_id")
     private Long userId;
-    @Column(name = "QUIZ_ID")
+    @Column(name = "quiz_id")
     private Long quizId;
 }
