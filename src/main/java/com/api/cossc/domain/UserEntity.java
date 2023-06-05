@@ -76,6 +76,10 @@ public class UserEntity extends BaseTimeEntity {
   @JoinColumn(name = "tag_id")
   private TagEntity tagEntity;
 
+  public void addTagEntity(TagEntity tag) {
+    this.tagEntity = tag;
+  }
+
 
   @Builder
   public UserEntity(String email, String name, String oauthKey, String img, String level, UserRole role,
