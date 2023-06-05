@@ -1,18 +1,23 @@
 package com.api.cossc.service.user;
 
+import com.api.cossc.domain.DailyQuizEntity;
 import com.api.cossc.domain.TagEntity;
 import com.api.cossc.domain.UserEntity;
 import com.api.cossc.dto.tag.TagRequest;
 import com.api.cossc.dto.user.UserMainResponse;
 import com.api.cossc.exception.CommonException;
+import com.api.cossc.repository.DailyQuizRepository;
 import com.api.cossc.repository.TagRepository;
 import com.api.cossc.repository.UserRepository;
+import com.api.cossc.service.quiz.QuizService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -21,6 +26,8 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final TagRepository tagRepository;
+    private final DailyQuizRepository dailyQuizRepository;
+    private final QuizService quizService;
 
     @Transactional(readOnly = true)
     @Override
@@ -31,7 +38,9 @@ public class UserServiceImpl implements UserService {
         if (Objects.isNull(userEntity.getTagEntity()))
             throw new CommonException(HttpStatus.INTERNAL_SERVER_ERROR, "USER의 TAG가 없습니다.");
 
-        return new UserMainResponse(userEntity.getName(), userEntity.getSolvedCount(), userEntity.getCorrectCount(), userEntity.getImg(), userEntity.getTagEntity().getName());
+        List<DailyQuizEntity> dailyQuiz = dailyQuizRepository.findAllByDailyQuizId_UserIdAndDailyQuizId_GivenDate(userEntity.getId(), LocalDate.now());
+
+        return new UserMainResponse(userEntity.getName(), userEntity.getSolvedCount(), userEntity.getCorrectCount(), userEntity.getImg(), userEntity.getTagEntity().getName(), !dailyQuiz.isEmpty());
     }
 
     @Transactional

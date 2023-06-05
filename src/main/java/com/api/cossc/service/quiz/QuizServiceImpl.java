@@ -8,6 +8,7 @@ import com.api.cossc.dto.quiz.*;
 import com.api.cossc.exception.CommonException;
 import com.api.cossc.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,17 +45,7 @@ public class QuizServiceImpl implements QuizService {
                     .quizResponses(dailyQuizEntities.stream().map(q -> QuizResponse.of(q.getQuizEntity())).toList())
                     .build();
 
-        List<QuizEntity> quizEntities = quizRepository.findAllByTagEntity_Id(dailyQuizRequest.getTagId());
-        Collections.shuffle(quizEntities);
-
-        List<Long> allQuizIdByUser = dailyQuizRepository.getAllQuizIdByUser(dailyQuizRequest.getUserId());
-
-        List<QuizEntity> dailyQuiz = quizEntities.stream()
-                .filter(quiz -> !allQuizIdByUser.contains(quiz.getId()))
-                .limit(3)
-                .toList();
-
-        dailyQuizRepository.saveAll(dailyQuiz.stream().map(quiz -> DailyQuizEntity.of(quiz, userEntity)).collect(Collectors.toList()));
+        List<QuizEntity> dailyQuiz = makeDailyQuiz(userEntity);
 
 
         List<QuizResponse> quizResponses = dailyQuiz.stream().map(QuizResponse::of).toList();
@@ -67,6 +58,23 @@ public class QuizServiceImpl implements QuizService {
         return DailyQuizResponse.builder()
                 .quizResponses(quizResponses)
                 .build();
+    }
+
+    @NotNull
+    @Override
+    public List<QuizEntity> makeDailyQuiz(UserEntity userEntity) {
+        List<QuizEntity> quizEntities = quizRepository.findAllByTagEntity_Id(userEntity.getTagEntity().getId());
+        Collections.shuffle(quizEntities);
+
+        List<Long> allQuizIdByUser = dailyQuizRepository.getAllQuizIdByUser(userEntity.getId());
+
+        List<QuizEntity> dailyQuiz = quizEntities.stream()
+                .filter(quiz -> !allQuizIdByUser.contains(quiz.getId()))
+                .limit(3)
+                .toList();
+
+        dailyQuizRepository.saveAll(dailyQuiz.stream().map(quiz -> DailyQuizEntity.of(quiz, userEntity)).collect(Collectors.toList()));
+        return dailyQuiz;
     }
 
     @Transactional
