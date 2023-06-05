@@ -7,7 +7,6 @@ import com.api.cossc.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,13 +21,11 @@ public class UserController {
   private final UserService userService;
 
   @GetMapping("/user/me")
-  @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
   public UserMainResponse getCurrentUser(@AuthenticationPrincipal CustomUserDetails user) throws Exception {
     return userService.getUserMe(user);
   }
 
   @PostMapping("/user/tag")
-  @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
   public ResponseEntity<Boolean> insertUserTag(@AuthenticationPrincipal CustomUserDetails user, @RequestBody TagRequest tagRequest) throws Exception {
     return ResponseEntity.ok(userService.insertUserTag(user, tagRequest));
   }

@@ -10,6 +10,7 @@ import com.api.cossc.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,12 +34,12 @@ public class QuizServiceImpl implements QuizService {
 
     @Transactional
     @Override
-    public DailyQuizResponse getDailyQuiz(DailyQuizRequest dailyQuizRequest) {
+    public DailyQuizResponse getDailyQuiz(UserDetails user) {
 
-        UserEntity userEntity = userRepository.findById(dailyQuizRequest.getUserId())
+        UserEntity userEntity = userRepository.findByOauthKeyOrEmail(user.getUsername(), null)
                 .orElseThrow(() -> new CommonException(HttpStatus.BAD_REQUEST, "유저가 없습니다."));
 
-        List<DailyQuizEntity> dailyQuizEntities = dailyQuizRepository.findAllByDailyQuizId_UserIdAndDailyQuizId_GivenDate(dailyQuizRequest.getUserId(), LocalDate.now());
+        List<DailyQuizEntity> dailyQuizEntities = dailyQuizRepository.findAllByDailyQuizId_UserIdAndDailyQuizId_GivenDate(userEntity.getId(), LocalDate.now());
 
         if (!dailyQuizEntities.isEmpty())
             return DailyQuizResponse.builder()

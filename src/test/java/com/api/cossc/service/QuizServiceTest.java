@@ -5,6 +5,7 @@ import com.api.cossc.domain.QuizEntity;
 import com.api.cossc.domain.QuizType;
 import com.api.cossc.dto.quiz.*;
 import com.api.cossc.repository.QuizRepository;
+import com.api.cossc.security.CustomUserDetails;
 import com.api.cossc.service.quiz.QuizService;
 import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeAll;
@@ -16,12 +17,14 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
@@ -57,10 +60,8 @@ class QuizServiceTest extends ContainerInitialization {
     @DisplayName("quiz가 부족할때 예외를 던진다")
     @Test
     public void should_throw_exception_if_dont_have_enough_quiz() {
-        DailyQuizRequest dailyQuizRequest = new DailyQuizRequest();
-        dailyQuizRequest.setTagId(1L);
-        dailyQuizRequest.setUserId(1L);
-        Throwable throwable = catchThrowable(() -> quizService.getDailyQuiz(dailyQuizRequest));
+        UserDetails userDetails = new CustomUserDetails(1L, "108717693410798874648", Collections.emptyList());
+        Throwable throwable = catchThrowable(() -> quizService.getDailyQuiz(userDetails));
 
         assertThat(throwable).isInstanceOf(Exception.class).hasMessageContaining("부족");
     }
@@ -123,11 +124,8 @@ class QuizServiceTest extends ContainerInitialization {
             quizService.create(QuizCreationRequest.of(null, "test" + i, "test", QuizType.OX, "test", "test", 1L));
         });
 
-        DailyQuizRequest dailyQuizRequest = new DailyQuizRequest();
-        dailyQuizRequest.setTagId(1L);
-        dailyQuizRequest.setUserId(1L);
-
-        assertThatCode(() -> quizService.getDailyQuiz(dailyQuizRequest)).doesNotThrowAnyException();
+        UserDetails userDetails = new CustomUserDetails(1L, "108717693410798874648", Collections.emptyList());
+        assertThatCode(() -> quizService.getDailyQuiz(userDetails)).doesNotThrowAnyException();
 
     }
 
