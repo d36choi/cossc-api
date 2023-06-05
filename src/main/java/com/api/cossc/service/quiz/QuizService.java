@@ -16,4 +16,6 @@ public interface QuizService {
 
     QuizCreationResponse create(QuizCreationRequest quizCreationRequest);
     QuizDeletionResponse delete(QuizDeletionRequest quizDeletionRequest);
+
+    boolean isAllSolved(UserEntity userEntity);
 }

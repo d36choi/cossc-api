@@ -104,4 +104,10 @@ public class QuizServiceImpl implements QuizService {
 
         return QuizDeletionResponse.of(quizDeletionRequest.getId());
     }
+
+    @Override
+    public boolean isAllSolved(UserEntity userEntity) {
+        return dailyQuizRepository.findAllByDailyQuizId_UserIdAndDailyQuizId_GivenDate(userEntity.getId(), LocalDate.now())
+                .stream().allMatch(DailyQuizEntity::isSolved);
+    }
 }
