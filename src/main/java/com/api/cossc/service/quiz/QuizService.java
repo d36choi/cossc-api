@@ -1,4 +1,4 @@
-package com.api.cossc.service;
+package com.api.cossc.service.quiz;
 
 import com.api.cossc.dto.quiz.*;
 

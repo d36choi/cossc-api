@@ -5,6 +5,7 @@ import com.api.cossc.domain.QuizEntity;
 import com.api.cossc.domain.QuizType;
 import com.api.cossc.dto.quiz.*;
 import com.api.cossc.repository.QuizRepository;
+import com.api.cossc.service.quiz.QuizService;
 import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
