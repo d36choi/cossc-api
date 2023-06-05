@@ -3,6 +3,7 @@ package com.api.cossc.service;
 import com.api.cossc.domain.DailyQuizEntity;
 import com.api.cossc.domain.QuizEntity;
 import com.api.cossc.domain.TagEntity;
+import com.api.cossc.domain.UserEntity;
 import com.api.cossc.dto.quiz.*;
 import com.api.cossc.exception.CommonException;
 import com.api.cossc.repository.*;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -28,12 +30,12 @@ public class QuizServiceImpl implements QuizService {
     private final UserRepository userRepository;
 
 
-    @Transactional(readOnly = true)
+    @Transactional
     @Override
     public DailyQuizResponse getDailyQuiz(DailyQuizRequest dailyQuizRequest) {
 
-//        UserEntity userEntity = userRepository.findById(dailyQuizRequest.getUserId())
-//                .orElseThrow(() -> new CommonException(HttpStatus.BAD_REQUEST, "유저가 없습니다."));
+        UserEntity userEntity = userRepository.findById(dailyQuizRequest.getUserId())
+                .orElseThrow(() -> new CommonException(HttpStatus.BAD_REQUEST, "유저가 없습니다."));
 
         List<DailyQuizEntity> dailyQuizEntities = dailyQuizRepository.findAllByDailyQuizId_UserIdAndDailyQuizId_GivenDate(dailyQuizRequest.getUserId(), LocalDate.now());
 
@@ -51,6 +53,9 @@ public class QuizServiceImpl implements QuizService {
                 .filter(quiz -> !allQuizIdByUser.contains(quiz.getId()))
                 .limit(3)
                 .toList();
+
+        dailyQuizRepository.saveAll(dailyQuiz.stream().map(quiz -> DailyQuizEntity.of(quiz, userEntity)).collect(Collectors.toList()));
+
 
         List<QuizResponse> quizResponses = dailyQuiz.stream().map(QuizResponse::of).toList();
 
