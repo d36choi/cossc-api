@@ -17,6 +17,8 @@ VALUES (2, 'java는 구린언어다', '테스트용', 'ox', '2023-01-15 23:38:39
 INSERT INTO cossc.QUIZ (quiz_id, title, description, type, created_date, created_by, updated_date, updated_by,
                         multiple_choice_question_id, ox_choice_question_id, tag_id)
 VALUES (3, 'private의 허용범위는 선언 클래스다', '테스트용',  'ox', '2023-01-15 23:38:39', '1', '2023-01-15 23:38:40', '1', null, null, 1);
+INSERT INTO cossc.QUIZ (quiz_id, created_date, updated_date, created_by, description, title, type, updated_by, multiple_choice_question_id, ox_choice_question_id, tag_id) VALUES (4, '2023-06-05 13:42:41', '2023-06-05 13:42:42', '1', '테스트용', '객관식입니다. 답은 2번', 'multiple_choice', '1', null, null, 1);
+
 
 INSERT INTO cossc.OX_CHOICE_QUESTION (answer_choice, ox_choice_question_id) VALUES (1, 1);
 update cossc.QUIZ
@@ -30,5 +32,8 @@ INSERT INTO cossc.OX_CHOICE_QUESTION (answer_choice, ox_choice_question_id) VALU
 update cossc.QUIZ
 set ox_choice_question_id = 3
 where quiz_id = 3;
-
+INSERT INTO cossc.MULTIPLE_CHOICE_QUESTION (multiple_choice_question_id, choice_1, choice_2, choice_3, choice_4, answer_choice) VALUES (1, '1번', '2번', '3번', '4번', 2);
+update cossc.QUIZ
+set multiple_choice_question_id = 1
+where quiz_id = 4;
 
