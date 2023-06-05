@@ -110,6 +110,4 @@ public class QuizServiceImpl implements QuizService {
         return dailyQuizRepository.findAllByDailyQuizId_UserIdAndDailyQuizId_GivenDate(userEntity.getId(), LocalDate.now())
                 .stream().allMatch(DailyQuizEntity::isSolved);
     }
-
-    // dailyQuizRepository.saveAll(dailyQuiz.stream().map(quiz -> DailyQuizEntity.of(quiz, userEntity)).collect(Collectors.toList()));
 }
