@@ -3,7 +3,8 @@ INSERT INTO cossc.USER (user_id, auth_provider, description, email, img, name, r
 
 INSERT INTO cossc.TAG (tag_id, created_date, updated_date, name) VALUES (1, '2023-01-15 17:07:01', '2023-01-15 17:07:00', 'python');
 INSERT INTO cossc.TAG (tag_id, created_date, updated_date, name) VALUES (2, '2023-01-15 17:07:18', '2023-01-15 17:07:19', 'java');
-INSERT INTO cossc.TAG (tag_id, created_date, updated_date, name) VALUES (3, '2023-01-15 17:07:29', '2023-01-15 17:07:29', 'js');
+INSERT INTO cossc.TAG (tag_id, created_date, updated_date, name) VALUES (3, '2023-01-15 17:07:29', '2023-01-15 17:07:29', 'javascript');
+INSERT INTO cossc.TAG (tag_id, created_date, updated_date, name) VALUES (3, '2023-01-15 17:07:29', '2023-01-15 17:07:29', 'typescript');
 
 INSERT INTO cossc.QUIZ (quiz_id, title, description, type, created_date, created_by, updated_date, updated_by,
                         multiple_choice_question_id, ox_choice_question_id, tag_id)
