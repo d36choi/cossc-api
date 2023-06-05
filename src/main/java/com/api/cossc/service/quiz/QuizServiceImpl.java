@@ -31,7 +31,8 @@ public class QuizServiceImpl implements QuizService {
 
     private final UserRepository userRepository;
 
-
+    //TODO:: 퀴즈 풀이시 답변 (ANSWER) 기록 && 퀴즈 채점 후 정답 여부 전달하는 method 구현
+    //TODO:: HISTORY 테이블의 역할이 명확히 있는지 확인 필요
     @Transactional
     @Override
     public DailyQuizResponse getDailyQuiz(UserDetails user) {
