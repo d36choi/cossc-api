@@ -52,8 +52,8 @@ public class QuizResponse {
                 .title(dailyQuizEntity.getQuizEntity().getTitle())
                 .desc(dailyQuizEntity.getQuizEntity().getDescription())
                 .type(dailyQuizEntity.getQuizEntity().getType().getName())
-                .solved(false)
-                .correct(false)
+                .solved(dailyQuizEntity.isSolved())
+                .correct(dailyQuizEntity.isCorrect())
                 .build();
     }
 }
