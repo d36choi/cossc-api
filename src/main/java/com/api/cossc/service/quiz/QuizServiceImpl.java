@@ -43,7 +43,7 @@ public class QuizServiceImpl implements QuizService {
 
         if (!dailyQuizEntities.isEmpty())
             return DailyQuizResponse.builder()
-                    .quizResponses(dailyQuizEntities.stream().map(q -> QuizResponse.of(q.getQuizEntity())).toList())
+                    .quizResponses(dailyQuizEntities.stream().map(QuizResponse::of).toList())
                     .build();
 
         List<QuizEntity> dailyQuiz = makeDailyQuiz(userEntity);
