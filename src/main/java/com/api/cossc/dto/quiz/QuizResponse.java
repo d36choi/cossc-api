@@ -1,5 +1,6 @@
 package com.api.cossc.dto.quiz;
 
+import com.api.cossc.domain.DailyQuizEntity;
 import com.api.cossc.domain.QuizEntity;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,6 +42,16 @@ public class QuizResponse {
                 .title(quizEntity.getTitle())
                 .desc(quizEntity.getDescription())
                 .type(quizEntity.getType().getName())
+                .solved(false)
+                .correct(false)
+                .build();
+    }
+    public static QuizResponse of(DailyQuizEntity dailyQuizEntity) {
+        return QuizResponse.builder()
+                .id(dailyQuizEntity.getQuizEntity().getId())
+                .title(dailyQuizEntity.getQuizEntity().getTitle())
+                .desc(dailyQuizEntity.getQuizEntity().getDescription())
+                .type(dailyQuizEntity.getQuizEntity().getType().getName())
                 .solved(false)
                 .correct(false)
                 .build();
