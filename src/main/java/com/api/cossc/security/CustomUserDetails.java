@@ -1,17 +1,16 @@
 package com.api.cossc.security;
 
-import static com.api.cossc.dto.oauth.UserRole.USER;
-
 import com.api.cossc.domain.UserEntity;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 @Getter
 public class CustomUserDetails implements UserDetails, OAuth2User {
@@ -28,7 +27,7 @@ public class CustomUserDetails implements UserDetails, OAuth2User {
 
   public static CustomUserDetails create(UserEntity userEntity) {
     List<GrantedAuthority> authorities = Collections.
-        singletonList(new SimpleGrantedAuthority(USER.getRole()));
+        singletonList(new SimpleGrantedAuthority(userEntity.getRole().getRole()));
 
     return new CustomUserDetails(
         userEntity.getId(),

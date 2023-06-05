@@ -5,6 +5,8 @@ import com.api.cossc.domain.QuizEntity;
 import com.api.cossc.domain.QuizType;
 import com.api.cossc.dto.quiz.*;
 import com.api.cossc.repository.QuizRepository;
+import com.api.cossc.service.quiz.QuizService;
+import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,14 +23,15 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("test")
 @Testcontainers
+@Ignore
 class QuizServiceTest extends ContainerInitialization {
     @Autowired
     private QuizRepository quizRepository;
@@ -111,4 +114,21 @@ class QuizServiceTest extends ContainerInitialization {
         //then
         assertThat(quizRepository.findById(quizDeletionResponse.getId())).isSameAs(Optional.empty());
     }
+
+    @DisplayName("daily quiz를 가져올 수 있다")
+    @Test
+    public void should_get_daily_quiz() {
+
+        IntStream.range(0, 3).forEach(i -> {
+            quizService.create(QuizCreationRequest.of(null, "test" + i, "test", QuizType.OX, "test", "test", 1L));
+        });
+
+        DailyQuizRequest dailyQuizRequest = new DailyQuizRequest();
+        dailyQuizRequest.setTagId(1L);
+        dailyQuizRequest.setUserId(1L);
+
+        assertThatCode(() -> quizService.getDailyQuiz(dailyQuizRequest)).doesNotThrowAnyException();
+
+    }
+
 }

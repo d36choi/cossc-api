@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+/**
+ * 유저의 퀴즈당 문제푼 기록, answer_id 포함
+ */
 @Getter
 @NoArgsConstructor
 @Entity
@@ -24,6 +27,9 @@ public class HistoryEntity extends BaseTimeEntity {
     @JoinColumn(name = "quiz_id")
     private QuizEntity quizEntity;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "answer_id")
+    private AnswerEntity answerEntity;
 
     @Column(name = "solved")
     private Boolean solved;
