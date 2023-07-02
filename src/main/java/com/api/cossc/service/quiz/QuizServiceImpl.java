@@ -1,9 +1,8 @@
 package com.api.cossc.service.quiz;
 
-import com.api.cossc.domain.DailyQuizEntity;
-import com.api.cossc.domain.QuizEntity;
-import com.api.cossc.domain.TagEntity;
-import com.api.cossc.domain.UserEntity;
+import com.api.cossc.domain.*;
+import com.api.cossc.dto.choice.ChoiceQuestionSubmitRequest;
+import com.api.cossc.dto.choice.ChoiceQuestionSubmitResponse;
 import com.api.cossc.dto.quiz.*;
 import com.api.cossc.exception.CommonException;
 import com.api.cossc.repository.*;
@@ -15,9 +14,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import static com.api.cossc.dto.choice.ChoiceQuestionSubmitResponse.ChoiceQuestionResponse;
+import static com.api.cossc.dto.choice.ChoiceQuestionSubmitResponse.QuizChoiceAnswerResponse;
 
 @RequiredArgsConstructor
 @Service
@@ -83,6 +87,8 @@ public class QuizServiceImpl implements QuizService {
     @Override
     public QuizCreationResponse create(QuizCreationRequest quizCreationRequest) {
 
+        //퀴즈 생성 이후 ChoiceQuestionService Create 로 생성
+
         TagEntity tagEntity = tagRepository.findById(quizCreationRequest.getTagId()).orElseThrow(() -> new IllegalArgumentException(""));
         QuizEntity quizEntity;
         if (quizCreationRequest.getId() == null) {
@@ -110,5 +116,65 @@ public class QuizServiceImpl implements QuizService {
     public boolean isAllSolved(UserEntity userEntity) {
         return dailyQuizRepository.findAllByDailyQuizId_UserIdAndDailyQuizId_GivenDate(userEntity.getId(), LocalDate.now())
                 .stream().allMatch(DailyQuizEntity::isSolved);
+    }
+
+
+    @Transactional
+    @Override
+    public ChoiceQuestionSubmitResponse submitDailyQuiz(UserDetails user, List<ChoiceQuestionSubmitRequest> choiceQuestionSubmitRequests) {
+
+        // user 검증
+        UserEntity userEntity = userRepository.findByOauthKeyOrEmail(user.getUsername(), null)
+                .orElseThrow(() -> new CommonException(HttpStatus.BAD_REQUEST, "유저가 없습니다."));
+
+
+        // user 의 daily quiz 존재여부 검증
+        List<DailyQuizEntity> dailyQuizEntities = dailyQuizRepository.findAllByDailyQuizId_UserIdAndDailyQuizId_GivenDate(userEntity.getId(), LocalDate.now());
+
+        // 없으면, 에러
+        if (dailyQuizEntities.isEmpty())
+            throw CommonException.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST)
+                    .message("유저의 오늘의 퀴즈가 아직 생성되지 않았습니다.")
+                    .build();
+
+
+        List<Boolean> corrects = new ArrayList<>();
+
+        List<QuizChoiceAnswerResponse> choiceAnswerResponses = new ArrayList<>();
+
+        IntStream.of(0, dailyQuizEntities.size())
+                .forEach(index -> {
+                    DailyQuizEntity dailyQuizEntity = dailyQuizEntities.get(index);
+                    ChoiceQuestionSubmitRequest choiceQuestionSubmitRequest = choiceQuestionSubmitRequests.get(index);
+
+                    if (choiceQuestionSubmitRequest.getQuizType().equals(QuizType.OX)) {
+                        OXChoiceQuestionEntity oxChoiceQuestionEntity = dailyQuizEntity.getQuizEntity().getOxChoiceQuestionEntity();
+                        dailyQuizEntity.submitCorrect(oxChoiceQuestionEntity.getAnswerChoice() == choiceQuestionSubmitRequest.isMyOXChoiceAnswer());
+                        choiceAnswerResponses.add(new QuizChoiceAnswerResponse(String.valueOf(oxChoiceQuestionEntity.getAnswerChoice()), String.valueOf(choiceQuestionSubmitRequest.isMyOXChoiceAnswer())));
+
+                    } else if (choiceQuestionSubmitRequest.getQuizType().equals(QuizType.MULTIPLE_CHOICE)) {
+                        MultipleChoiceQuestionEntity multipleChoiceQuestionEntity = dailyQuizEntity.getQuizEntity().getMultipleChoiceQuestionEntity();
+                        dailyQuizEntity.submitCorrect(multipleChoiceQuestionEntity.getCorrectChoice() == choiceQuestionSubmitRequest.getMyMultipleChoiceAnswer());
+                        choiceAnswerResponses.add(new QuizChoiceAnswerResponse(String.valueOf(multipleChoiceQuestionEntity.getCorrectChoice()), String.valueOf(choiceQuestionSubmitRequest.getMyMultipleChoiceAnswer())));
+                    }
+
+                    corrects.add(dailyQuizEntity.isCorrect());
+                });
+
+        // 있으면, 각 문제의 정답 가져오기
+
+        // 정답과 제출답변의 일치여부 확인
+
+        // 일치할경우 각 문제의 correct = true
+        List<QuizResponse> quizResponses = dailyQuizEntities.stream().map(QuizResponse::of).toList();
+
+        List<ChoiceQuestionResponse> choiceQuestionResponses = new ArrayList<>();
+        IntStream.of(0, choiceAnswerResponses.size())
+                .forEach(index -> {
+                    choiceQuestionResponses.add(new ChoiceQuestionResponse(quizResponses.get(index), choiceAnswerResponses.get(index)));
+                });
+
+        return new ChoiceQuestionSubmitResponse(choiceQuestionResponses);
     }
 }

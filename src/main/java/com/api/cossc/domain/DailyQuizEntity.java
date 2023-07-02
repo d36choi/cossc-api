@@ -43,4 +43,9 @@ public class DailyQuizEntity {
 
         return dailyQuizEntity;
     }
+
+    public void submitCorrect(boolean correct) {
+        this.solved = true;
+        this.correct = correct;
+    }
 }
