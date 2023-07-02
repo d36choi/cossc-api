@@ -1,5 +1,7 @@
 package com.api.cossc.controller;
 
+import com.api.cossc.dto.choice.ChoiceQuestionSubmitRequest;
+import com.api.cossc.dto.choice.ChoiceQuestionSubmitResponse;
 import com.api.cossc.dto.quiz.*;
 import com.api.cossc.security.CustomUserDetails;
 import com.api.cossc.service.quiz.QuizService;
@@ -9,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Validated
 @RequiredArgsConstructor
@@ -37,5 +40,11 @@ public class QuizController {
     public QuizDeletionResponse delete(@Valid QuizDeletionRequest quizDeletionRequest) {
 
         return quizService.delete(quizDeletionRequest);
+    }
+
+    @PostMapping("/quiz/daily/submit")
+    public ChoiceQuestionSubmitResponse test(@AuthenticationPrincipal CustomUserDetails user, @Valid @RequestBody List<ChoiceQuestionSubmitRequest> choiceQuestionSubmitRequests) {
+
+        return quizService.submitDailyQuiz(user, choiceQuestionSubmitRequests);
     }
 }
