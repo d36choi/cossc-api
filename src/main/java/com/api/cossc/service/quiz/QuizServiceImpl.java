@@ -139,10 +139,27 @@ public class QuizServiceImpl implements QuizService {
                     .build();
 
 
-        List<Boolean> corrects = new ArrayList<>();
+        List<QuizChoiceAnswerResponse> choiceAnswerResponses = getQuizChoiceAnswerResponses(choiceQuestionSubmitRequests, dailyQuizEntities);
 
+        List<QuizResponse> quizResponses = dailyQuizEntities.stream().map(QuizResponse::of).toList();
+
+        List<ChoiceQuestionResponse> choiceQuestionResponses = new ArrayList<>();
+        IntStream.of(0, choiceAnswerResponses.size())
+                .forEach(index -> {
+                    choiceQuestionResponses.add(new ChoiceQuestionResponse(quizResponses.get(index), choiceAnswerResponses.get(index)));
+                });
+
+        return new ChoiceQuestionSubmitResponse(choiceQuestionResponses);
+    }
+
+    @NotNull
+    private static List<QuizChoiceAnswerResponse> getQuizChoiceAnswerResponses(List<ChoiceQuestionSubmitRequest> choiceQuestionSubmitRequests, List<DailyQuizEntity> dailyQuizEntities) {
         List<QuizChoiceAnswerResponse> choiceAnswerResponses = new ArrayList<>();
+        // 있으면, 각 문제의 정답 가져오기
 
+        // 정답과 제출답변의 일치여부 확인
+
+        // 일치할경우 각 문제의 correct = true
         IntStream.of(0, dailyQuizEntities.size())
                 .forEach(index -> {
                     DailyQuizEntity dailyQuizEntity = dailyQuizEntities.get(index);
@@ -158,23 +175,7 @@ public class QuizServiceImpl implements QuizService {
                         dailyQuizEntity.submitCorrect(multipleChoiceQuestionEntity.getCorrectChoice() == choiceQuestionSubmitRequest.getMyMultipleChoiceAnswer());
                         choiceAnswerResponses.add(new QuizChoiceAnswerResponse(String.valueOf(multipleChoiceQuestionEntity.getCorrectChoice()), String.valueOf(choiceQuestionSubmitRequest.getMyMultipleChoiceAnswer())));
                     }
-
-                    corrects.add(dailyQuizEntity.isCorrect());
                 });
-
-        // 있으면, 각 문제의 정답 가져오기
-
-        // 정답과 제출답변의 일치여부 확인
-
-        // 일치할경우 각 문제의 correct = true
-        List<QuizResponse> quizResponses = dailyQuizEntities.stream().map(QuizResponse::of).toList();
-
-        List<ChoiceQuestionResponse> choiceQuestionResponses = new ArrayList<>();
-        IntStream.of(0, choiceAnswerResponses.size())
-                .forEach(index -> {
-                    choiceQuestionResponses.add(new ChoiceQuestionResponse(quizResponses.get(index), choiceAnswerResponses.get(index)));
-                });
-
-        return new ChoiceQuestionSubmitResponse(choiceQuestionResponses);
+        return choiceAnswerResponses;
     }
 }
