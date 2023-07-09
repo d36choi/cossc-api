@@ -3,8 +3,13 @@ package com.api.cossc.service;
 import com.api.cossc.ContainerInitialization;
 import com.api.cossc.domain.QuizEntity;
 import com.api.cossc.domain.QuizType;
-import com.api.cossc.dto.quiz.*;
+import com.api.cossc.dto.quiz.QuizCreationRequest;
+import com.api.cossc.dto.quiz.QuizCreationResponse;
+import com.api.cossc.dto.quiz.QuizDeletionRequest;
+import com.api.cossc.dto.quiz.QuizDeletionResponse;
 import com.api.cossc.repository.QuizRepository;
+import com.api.cossc.repository.UserRepository;
+import com.api.cossc.security.CustomUserDetails;
 import com.api.cossc.service.quiz.QuizService;
 import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeAll;
@@ -16,12 +21,14 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
@@ -33,11 +40,14 @@ import static org.assertj.core.api.Assertions.*;
 @Testcontainers
 @Ignore
 class QuizServiceTest extends ContainerInitialization {
+    public static final String AUTH_KEY = "108717693410798874648";
     @Autowired
     private QuizRepository quizRepository;
 
     @Autowired
     private QuizService quizService;
+    @Autowired
+    private UserRepository userRepository;
 
     @BeforeAll
     public static void setup(@Autowired DataSource dataSource) {
@@ -57,10 +67,8 @@ class QuizServiceTest extends ContainerInitialization {
     @DisplayName("quiz가 부족할때 예외를 던진다")
     @Test
     public void should_throw_exception_if_dont_have_enough_quiz() {
-        DailyQuizRequest dailyQuizRequest = new DailyQuizRequest();
-        dailyQuizRequest.setTagId(1L);
-        dailyQuizRequest.setUserId(1L);
-        Throwable throwable = catchThrowable(() -> quizService.getDailyQuiz(dailyQuizRequest));
+        UserDetails userDetails = new CustomUserDetails(1L, "108717693410798874648", Collections.emptyList());
+        Throwable throwable = catchThrowable(() -> quizService.getDailyQuiz(userDetails));
 
         assertThat(throwable).isInstanceOf(Exception.class).hasMessageContaining("부족");
     }
@@ -123,11 +131,24 @@ class QuizServiceTest extends ContainerInitialization {
             quizService.create(QuizCreationRequest.of(null, "test" + i, "test", QuizType.OX, "test", "test", 1L));
         });
 
-        DailyQuizRequest dailyQuizRequest = new DailyQuizRequest();
-        dailyQuizRequest.setTagId(1L);
-        dailyQuizRequest.setUserId(1L);
+        UserDetails userDetails = new CustomUserDetails(1L, "108717693410798874648", Collections.emptyList());
+        assertThatCode(() -> quizService.getDailyQuiz(userDetails)).doesNotThrowAnyException();
 
-        assertThatCode(() -> quizService.getDailyQuiz(dailyQuizRequest)).doesNotThrowAnyException();
+    }
+    @DisplayName("최초로 생성한 dailyQuiz는  AllSolved가 false이다")
+    @Test
+    public void should_not_be_solved_state_when_init_dailyQuiz() throws Exception {
+
+        IntStream.range(0, 3).forEach(i -> {
+            quizService.create(QuizCreationRequest.of(null, "test" + i, "test", QuizType.OX, "test", "test", 1L));
+        });
+
+        UserDetails userDetails = new CustomUserDetails(1L, AUTH_KEY, Collections.emptyList());
+        assertThatCode(() -> quizService.getDailyQuiz(userDetails)).doesNotThrowAnyException();
+
+
+        assertThat(quizService.isAllSolved(userRepository.findByOauthKeyOrEmail(AUTH_KEY, null)
+                .orElse(null))).isFalse();
 
     }
 

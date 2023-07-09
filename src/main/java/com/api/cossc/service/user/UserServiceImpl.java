@@ -7,6 +7,7 @@ import com.api.cossc.dto.user.UserMainResponse;
 import com.api.cossc.exception.CommonException;
 import com.api.cossc.repository.TagRepository;
 import com.api.cossc.repository.UserRepository;
+import com.api.cossc.service.quiz.QuizService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +22,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final TagRepository tagRepository;
+    private final QuizService quizService;
 
     @Transactional(readOnly = true)
     @Override
@@ -31,7 +33,7 @@ public class UserServiceImpl implements UserService {
         if (Objects.isNull(userEntity.getTagEntity()))
             throw new CommonException(HttpStatus.INTERNAL_SERVER_ERROR, "USER의 TAG가 없습니다.");
 
-        return new UserMainResponse(userEntity.getName(), userEntity.getSolvedCount(), userEntity.getCorrectCount(), userEntity.getImg(), userEntity.getTagEntity().getName());
+        return new UserMainResponse(userEntity.getName(), userEntity.getSolvedCount(), userEntity.getCorrectCount(), userEntity.getImg(), userEntity.getTagEntity().getName(), quizService.isAllSolved(userEntity));
     }
 
     @Transactional
