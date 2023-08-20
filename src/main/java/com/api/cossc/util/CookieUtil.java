@@ -1,18 +1,18 @@
 package com.api.cossc.util;
 
-import java.util.Base64;
-import java.util.Optional;
+import org.springframework.util.SerializationUtils;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
-import org.springframework.util.SerializationUtils;
+import java.util.Base64;
+import java.util.Optional;
 
 public class CookieUtil {
 
   public static Optional<Cookie> getCookie(HttpServletRequest request, String name) {
     Cookie[] cookies = request.getCookies();
-    if (cookies != null && cookies.length > 0) {
+     if (cookies != null) {
       for (Cookie cookie : cookies) {
         if (cookie.getName().equals(name)) {
           return Optional.of(cookie);

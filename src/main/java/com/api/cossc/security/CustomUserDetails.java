@@ -42,6 +42,10 @@ public class CustomUserDetails implements UserDetails, OAuth2User {
     return userDetails;
   }
 
+  public static CustomUserDetails mockOf() {
+    return new CustomUserDetails(1L, "108717693410798874648", List.of(new SimpleGrantedAuthority("ROLE_USER")));
+  }
+
   // UserDetail Override
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
