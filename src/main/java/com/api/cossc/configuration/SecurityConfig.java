@@ -33,8 +33,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   public void configure(WebSecurity web) throws Exception {
-    web.ignoring().antMatchers("/h2-console/**", "/favicon.ico", "/api/**");
-    web.ignoring().antMatchers("/swagger-ui/**", "/swagger-ui**", "/v3/api-docs/**", "/v3/api-docs**");
+    web.ignoring().antMatchers("/h2-console/**", "/favicon.ico");
+    web.ignoring().antMatchers("/swagger-ui.html/**", "/swagger-ui/**", "/swagger-ui**", "/v3/api-docs/**", "/v3/api-docs**");
   }
 
   @Override
@@ -44,6 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             //NOTE:: oauth2 실패이슈로 허용
             .antMatchers("/user/**", "/quiz/**", "/choice/**", "/answer/**").permitAll()
         .antMatchers("/oauth2/**", "/auth/**").permitAll()
+        .antMatchers("/swagger-resources/**").permitAll()
         .antMatchers("/admin/**").hasRole("ADMIN")
         .anyRequest().authenticated();
 
