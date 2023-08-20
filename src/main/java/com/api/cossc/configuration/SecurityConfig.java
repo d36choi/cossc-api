@@ -34,14 +34,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   public void configure(WebSecurity web) throws Exception {
     web.ignoring().antMatchers("/h2-console/**", "/favicon.ico");
-    web.ignoring().antMatchers("/swagger-ui/**", "/swagger-ui**", "/v3/api-docs/**", "/v3/api-docs**");
+    web.ignoring().antMatchers("/swagger-ui.html/**", "/swagger-ui/**", "/swagger-ui**", "/v3/api-docs/**", "/v3/api-docs**");
   }
+
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.authorizeRequests()
         .antMatchers("/h2-console/**").permitAll()
         .antMatchers("/oauth2/**", "/auth/**").permitAll()
+        .antMatchers("/swagger-resources/**").permitAll()
         .antMatchers("/admin/**").hasRole("ADMIN")
         .anyRequest().authenticated();
 

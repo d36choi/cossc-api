@@ -60,11 +60,13 @@ dependencies {
 //	implementation 'io.swagger.core.v3:swagger-jaxrs2:2.1.10'
 
 //	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
-	implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
+//	implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
+//
+//	// swagger
+//	implementation 'org.springdoc:springdoc-openapi-ui:1.6.8'
 
-	// swagger
-	implementation 'org.springdoc:springdoc-openapi-ui:1.6.8'
-
+	implementation("io.springfox:springfox-boot-starter:3.0.0")
+	implementation("io.springfox:springfox-swagger-ui:3.0.0")
 	// query DSL
 	implementation 'com.querydsl:querydsl-jpa'
 	implementation 'com.querydsl:querydsl-apt'
