@@ -10,7 +10,7 @@ RUN microdnf install findutils
 
 # copy code & build
 COPY . .
-RUN ./gradlew clean bootJar
+RUN ./gradlew clean bootJar -x test
 
 # unpack jar
 WORKDIR ${BUILD_TARGET}
